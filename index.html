@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jeu Pac-Man</title>
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="message"></div>
+            <div class="title">
+                <h1 style="font-family: 'VT323', monospace; font-size: 24px;">Pac-Man</h1>
+            </div>
+            <div id="game">
+                <button id="pauseButton">Pause</button>
+                <button id="restartButton">Rejouer</button>
+                <div id="score">Score: 0</div>
+
+                <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
+                <div id="grid"></div>
+            </div>
+        </div>
+
+        <script src="model.js"></script>
+        <script src="vue.js"></script>
+        
+    </body>
+</html>
