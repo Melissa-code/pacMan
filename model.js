@@ -1,21 +1,32 @@
 ElementType = {
-    MUR: 0,
-    VIDE: 1,
-    POINT: 2,
-    ENERGIE: 3,
+  MUR: 0,
+  VIDE: 1,
+  POINT: 2,
+  ENERGIE: 3,
 }
+
 
 /* ************************************************************** */
 /*        Plateau jeu                                             */ 
 /* ************************************************************** */
 
 class PlateauJeu {
+  
+  grille;
+  listFantomes; 
 
-    constructor(grille, listFantomes) {
+  constructor(grille, listFantomes) {
+    this.grille = grille; 
+    this.listFantomes = listFantomes;
+  }
 
-        // chercher un plan de jeu (modele)
-        // modeliser une matrice
+  afficherGrilleString() {
+    for (let i = 0; i < this.grille.length; i++) {
+        console.log(this.grille[i].join(' '));
     }
+  }
+
+
 }
 
 /* ************************************************************** */
@@ -24,10 +35,17 @@ class PlateauJeu {
 
 class Fantome {
 
-    couleur;
-    position;
-    intelligence;
-    direction;
+  couleur;
+  position; //[x, y]
+  intelligence;
+  direction;
+
+  constructor(couleur, position, intelligence, direction) {
+    this.couleur = couleur;
+    this.position = position;
+    this.intelligence = intelligence;
+    this.direction = direction;
+  }
 }
 
 /* ************************************************************** */
@@ -36,10 +54,17 @@ class Fantome {
 
 class PacMan {
 
-    position; 
-    direction;
-    invinsible; 
-    score;
+  position;  //[x, y]
+  direction;
+  invincible; 
+  score;
+
+  constructor(position, direction, invincible, score) {
+    this.position = position;
+    this.direction = direction; 
+    this.invincible = invincible;
+    this.score = score; 
+  }
 }
 
 
@@ -49,17 +74,17 @@ class PacMan {
 
 class Fruit {
 
-    nom;
-    nbPoints;
-    image;
-    position;
+  nom;
+  nbPoints;
+  image;
+  position;
 
-    constructor(nom, nbPoints, image, position) {
-        this.nom = nom; 
-        this.nbPoints = nbPoints; 
-        this.image = image; 
-        this.position = position; 
-    }
+  constructor(nom, nbPoints, image, position) {
+      this.nom = nom; 
+      this.nbPoints = nbPoints; 
+      this.image = image; 
+      this.position = position; 
+  }
 }
 
 /* ************************************************************** */

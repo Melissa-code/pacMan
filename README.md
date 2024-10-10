@@ -61,7 +61,7 @@ Des fruits apparaissent parfois au centre du labyrinthe. Lorsque Pac-Man les man
 Les fruits bonus apparaissent à intervalles réguliers et donnent entre 100 et 5000 points selon le fruit.
 
 
-### Les tunnels:
+### Les tunnels/vides:
 
 Il y a des tunnels de téléportation aux extrémités du labyrinthe. Si Pac-Man (ou un fantôme) entre dans un tunnel, il ressort de l'autre côté du labyrinthe.
 

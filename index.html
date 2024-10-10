@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Jeu Pac-Man</title>
     </head>
-    
+
     <body>
         <div class="container">
             <div class="message"></div>
@@ -13,17 +13,45 @@
                 <h1 style="font-family: 'VT323', monospace; font-size: 24px;">Pac-Man</h1>
             </div>
             <div id="game">
-                <button id="pauseButton">Pause</button>
-                <button id="restartButton">Rejouer</button>
                 <div id="score">Score: 0</div>
 
-                <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
+                <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;"></canvas>
                 <div id="grid"></div>
             </div>
         </div>
 
         <script src="model.js"></script>
         <script src="vue.js"></script>
+
+        <script>
+
+            // chercher un plan de jeu (modele)
+            // modeliser une matrice
+            const planDeJeu = [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                [0, 3, 2, 2, 0, 2, 2, 2, 2, 3, 0],
+                [0, 2, 0, 2, 0, 0, 0, 2, 0, 2, 0], 
+                [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0], 
+                [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1], 
+                [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0], 
+                [0, 2, 0, 2, 0, 0, 0, 2, 2, 2, 0], 
+                [0, 3, 2, 2, 2, 2, 2, 2, 2, 3, 0], 
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  
+            ];
+
+            // constructor(couleur, position, intelligence, direction)
+            const blinkyFantome = new Fantome("rouge", [1, 1], "faible", "droite");
+            const inkyFantome = new Fantome("bleu", [3, 3], "moyenne", "gauche"); 
+            const fantomes = [blinkyFantome, inkyFantome];
+
+            const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes);
+            console.log(plateauDeJeu); 
+            plateauDeJeu.afficherGrilleString();
+
+            const tailleCarreau = 50; //50px
+            const vue = new Vue(plateauDeJeu, document, tailleCarreau);
+
+        </script>
         
     </body>
 </html>
