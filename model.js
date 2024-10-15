@@ -13,19 +13,12 @@ ElementType = {
 class PlateauJeu {
   
   grille;
-  listFantomes; 
+  listeFantomes; 
 
-  constructor(grille, listFantomes) {
+  constructor(grille, listeFantomes) {
     this.grille = grille; 
-    this.listFantomes = listFantomes;
+    this.listeFantomes = listeFantomes;
   }
-
-  afficherGrilleString() {
-    for (let i = 0; i < this.grille.length; i++) {
-        console.log(this.grille[i].join(' '));
-    }
-  }
-
 
 }
 
@@ -113,16 +106,16 @@ class FabriqueFruit {
 
     switch (nomFruit) {
       case "Pomme":
-        fruit = new Fruit(nomFruit, 100, "imgPomme.png", 0,0);
+        fruit = new Fruit(nomFruit, 100, "imgPomme.png", 0, 0);
         break;
       case "Orange":
-        fruit = new Fruit(nomFruit, 150, "imgOrange.png", 0,0);
+        fruit = new Fruit(nomFruit, 150, "imgOrange.png", 0, 0);
         break;
       case "Cerise":
-        fruit = new Fruit(nomFruit, 200, "imgCerise.png", 0,0);
+        fruit = new Fruit(nomFruit, 200, "imgCerise.png", 0, 0);
         break;
       case "Banane":
-        fruit = new Fruit(nomFruit, 250, "imgBanane.png", 0,0);
+        fruit = new Fruit(nomFruit, 250, "imgBanane.png", 0, 0);
         break;
       default:
         console.log("Erreur: Fruit ", nomFruit, " inconnu.");

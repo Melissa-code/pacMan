@@ -87,3 +87,8 @@ Chaque labyrinthe est plus ou moins le même, mais la difficulté augmente à ch
 
 _______________________________________________________
 
+
+- Create all the classes in the model 
+
+- Display the game in the vue 
+
