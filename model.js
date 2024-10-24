@@ -5,6 +5,13 @@ ElementType = {
   ENERGIE: 3,
 }
 
+Directions = {
+  GAUCHE: 0, 
+  DROITE: 1, 
+  HAUT: 2, 
+  BAS: 3, 
+}
+
 
 /* ************************************************************** */
 /*        Plateau jeu                                             */ 
@@ -14,11 +21,63 @@ class PlateauJeu {
   
   grille;
   listeFantomes; 
+  pacman;
+  vitesse;
 
-  constructor(grille, listeFantomes) {
+  constructor(grille, listeFantomes, pacman) {
     this.grille = grille; 
     this.listeFantomes = listeFantomes;
+    this.pacman = pacman; 
+    this.vitesse = 1000;
+
+    setTimeout(() => this.avancer(), this.vitesse);
   }
+
+  dirigerPacman(direction) {
+    switch (direction) {
+      case "gauche":
+        this.pacman.direction = Directions.GAUCHE;
+        break;
+      case "droite":
+        this.pacman.direction = Directions.DROITE;
+        break;
+      case "haut":
+        this.pacman.direction = Directions.HAUT;
+        break;
+      case "bas":
+        this.pacman.direction = Directions.BAS;
+        break;
+      default:
+        console.log("Action inconnue:" + direction);
+    }
+    //console.log(this.pacman.direction)
+  }
+
+  avancer() {
+    switch (this.pacman.direction) {
+        case Directions.GAUCHE:
+            this.pacman.position[0] -= 1;
+            break;
+        case Directions.DROITE:
+            this.pacman.position[0] += 1;
+            break;
+        case Directions.HAUT:
+            this.pacman.position[1] -= 1;
+            break;
+        case Directions.BAS:
+            this.pacman.position[1] += 1;
+            break;
+        default:
+            //console.log("Action avancer inconnue");
+    }
+    //console.log(this.pacman.direction)
+    
+    setTimeout(() => this.avancer(), this.vitesse);
+  }
+
+  // effacer écran (voir rectBlank)
+  // tester si obstacle bordure
+  // autres directions
 
 }
 
@@ -52,12 +111,13 @@ class PacMan {
   invincible; 
   score;
 
-  constructor(position, direction, invincible, score) {
+  constructor(position, direction = null, invincible, score) {
     this.position = position;
     this.direction = direction; 
     this.invincible = invincible;
     this.score = score; 
   }
+  
 }
 
 

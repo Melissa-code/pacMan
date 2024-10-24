@@ -46,11 +46,17 @@
             ];
 
             // constructor(couleur, position, intelligence, direction)
-            const blinkyFantome = new Fantome("rouge", [2, 1], "faible", "droite");
-            const inkyFantome = new Fantome("bleu", [3, 3], "moyenne", "gauche"); 
-            const fantomes = [blinkyFantome, inkyFantome];
+            const rougeFantome = new Fantome("rouge", [9, 6], "faible", "droite");
+            const bleuFantome = new Fantome("bleu", [8,7], "moyenne", "gauche"); 
+            const orangeFantome = new Fantome("orange", [9,7], "moyenne", "gauche"); 
+            const roseFantome = new Fantome("rose", [10,7], "moyenne", "gauche"); 
 
-            const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes);
+            const fantomes = [rougeFantome, bleuFantome, orangeFantome, roseFantome];
+
+            // constructor(position, direction = null, invincible, score) {
+            const pacman = new PacMan([9, 9], false, 0); 
+
+            const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes, pacman);
             const vue = new Vue(plateauDeJeu, document, 50);
 
         </script>

@@ -5,15 +5,15 @@ class Vue {
         this.myCanva = document.getElementById("myCanvas");; 
         this.tailleCarreau = tailleCarreau; 
         this.ctx = this.myCanva.getContext("2d");
-
         this.myCanva.width = this.plateauDeJeu.grille[0].length * this.tailleCarreau;
         this.myCanva.height = this.plateauDeJeu.grille.length * this.tailleCarreau;
     
-        // images des fantômes
         this.imagesFantomes = [];
         this.chargerImagesFantomes();
-
+        this.imagePacman = ''; 
+        this.chargerImagePacman(); 
         this.afficherPlateauJeu();
+        this.initControl(document); 
     }
 
     chargerImagesFantomes() {
@@ -29,10 +29,45 @@ class Vue {
         }
     }
 
+    chargerImagePacman() {
+        let image = new Image();
+
+        image.addEventListener("load", () => {
+            this.ctx.drawImage(image, this.plateauDeJeu.pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.plateauDeJeu.pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
+        }, false);
+
+        image.src = 'assets/images/pacman.svg'; 
+        this.imagePacman = image;
+        //console.log(this.imagePacman)
+        
+    }
+
+    initControl(document)
+    {
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                this.plateauDeJeu.dirigerPacman('gauche');               
+            } else if (event.key === 'ArrowRight') {
+                this.plateauDeJeu.dirigerPacman('droite');
+            } else if (event.key === 'ArrowDown') {
+                this.plateauDeJeu.dirigerPacman('bas');
+            } else if (event.key === 'ArrowUp') {
+                this.plateauDeJeu.dirigerPacman('haut');
+            }
+        
+           this.afficherPlateauJeu();
+        });
+    }
+
+
     afficherPlateauJeu() {
+
+        // Efface le canvas 
+        this.ctx.clearRect(0, 0, this.myCanva.width, this.myCanva.height);
+
         for (let y = 0; y < this.plateauDeJeu.grille.length; y++) {
             for (let x = 0; x < this.plateauDeJeu.grille[y].length; x++) {
-                // choisir l'élément à afficher 
+                // Affiche les éléments du plateau de jeu (mur, energie, vide, point))
                 switch (this.plateauDeJeu.grille[y][x]) {
                     case 0:
                         this.ctx.fillStyle = 'black';
@@ -55,15 +90,22 @@ class Vue {
         }
 
         // Affiche les fantômes 
-        for (let i = 0; i < this.plateauDeJeu.listeFantomes.length; i++) {
-            let fantome = this.plateauDeJeu.listeFantomes[i];
-            let image = this.imagesFantomes[i];
-       
-            if (image) {
-                let position = fantome.position; // [x, y]
-                this.ctx.drawImage(image, position[0] * this.tailleCarreau, position[1] * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
+        for (let i = 0; i < this.imagesFantomes.length; i++) {
+            const image = this.imagesFantomes[i];
+            const fantome = this.plateauDeJeu.listeFantomes[i];
+            // Dessiner uniquement si l'image chargée
+            if (image.complete) {
+                this.ctx.drawImage(image, fantome.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), fantome.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
             }
         }
+        
+        // Affiche Pacman
+        if (this.imagePacman.complete) {
+            const pacman = this.plateauDeJeu.pacman;
+            this.ctx.drawImage(this.imagePacman, pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
+        }
+        
+        setTimeout(() => this.afficherPlateauJeu(), 200);
     }
 
     drawCircle(ctx, x, y, rayon, fill, stroke, strokeWidth) {
