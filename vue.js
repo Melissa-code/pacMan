@@ -19,7 +19,7 @@ class Vue {
     chargerImagesFantomes() {
         for (const fantome of this.plateauDeJeu.listeFantomes) {
             let image = new Image();
-
+            // Charge l'image
             image.addEventListener("load", () => {
                 this.ctx.drawImage(image, fantome.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), fantome.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
             }, false);
@@ -31,15 +31,13 @@ class Vue {
 
     chargerImagePacman() {
         let image = new Image();
-
+        // Charge l'image
         image.addEventListener("load", () => {
             this.ctx.drawImage(image, this.plateauDeJeu.pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.plateauDeJeu.pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
         }, false);
 
         image.src = 'assets/images/pacman.svg'; 
         this.imagePacman = image;
-        //console.log(this.imagePacman)
-        
     }
 
     initControl(document)
@@ -69,18 +67,18 @@ class Vue {
             for (let x = 0; x < this.plateauDeJeu.grille[y].length; x++) {
                 // Affiche les éléments du plateau de jeu (mur, energie, vide, point))
                 switch (this.plateauDeJeu.grille[y][x]) {
-                    case 0:
+                    case ElementType.MUR:
                         this.ctx.fillStyle = 'black';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
-                    case 1:
+                    case ElementType.VIDE:
                         this.ctx.fillStyle = 'white';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
-                    case 2:
+                    case ElementType.POINT:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'yellow', 'yellow', 2)
                         break;
-                    case 3:
+                    case ElementType.ENERGIE:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/5, 'red', 'red', 2)
                         break;
                     default:

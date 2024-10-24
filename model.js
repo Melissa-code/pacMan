@@ -50,34 +50,51 @@ class PlateauJeu {
       default:
         console.log("Action inconnue:" + direction);
     }
-    //console.log(this.pacman.direction)
   }
 
   avancer() {
+    // simuler le mouvement Pacman sans modifier sa position réelle (copie tableau)
+    let nouvellePositionPacman = [...this.pacman.position];
+
     switch (this.pacman.direction) {
         case Directions.GAUCHE:
-            this.pacman.position[0] -= 1;
+            nouvellePositionPacman[0] -= 1;
             break;
         case Directions.DROITE:
-            this.pacman.position[0] += 1;
+            nouvellePositionPacman[0] += 1;
             break;
         case Directions.HAUT:
-            this.pacman.position[1] -= 1;
+            nouvellePositionPacman[1] -= 1;
             break;
         case Directions.BAS:
-            this.pacman.position[1] += 1;
+            nouvellePositionPacman[1] += 1;
             break;
         default:
             //console.log("Action avancer inconnue");
     }
-    //console.log(this.pacman.direction)
-    
-    setTimeout(() => this.avancer(), this.vitesse);
+
+    if (!this.detecterMur(nouvellePositionPacman)) {
+        this.pacman.position = nouvellePositionPacman;
+    }
+    // Avance en continu 
+    setTimeout(() => this.avancer(), this.vitesse); 
   }
 
   // effacer écran (voir rectBlank)
   // tester si obstacle bordure
   // autres directions
+
+
+  detecterMur(positionPacman) {
+
+    if (positionPacman[0] < 0 || positionPacman[1] < 0) return true;
+    if (positionPacman[0] > this.grille[0].length || positionPacman[0] > this.grille.length) return true;
+
+    const casePacman = this.grille[positionPacman[1]][positionPacman[0]];
+    if (casePacman === ElementType.MUR) return true;
+
+    return false;
+  }
 
 }
 
