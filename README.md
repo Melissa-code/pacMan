@@ -31,7 +31,7 @@ Quatre fantômes colorés poursuivent Pac-Man. Si un fantôme touche Pac-Man, ce
 
 - Inky (bleu): son comportement dépend de la position de Pac-Man et de Blinky.
 
--  Clyde (orange): il se comporte de manière imprévisible, alternant entre la poursuite et l'éloignement de Pac-Man.
+- Clyde (orange): il se comporte de manière imprévisible, alternant entre la poursuite et l'éloignement de Pac-Man.
 
 
 ### Les pastilles/points:

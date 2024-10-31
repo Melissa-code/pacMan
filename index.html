@@ -46,9 +46,9 @@
             ];
 
             // constructor(couleur, position, intelligence, direction)
-            const rougeFantome = new Fantome("rouge", [9, 6], "faible", "droite");
-            const bleuFantome = new Fantome("bleu", [8,7], "moyenne", "gauche"); 
-            const orangeFantome = new Fantome("orange", [9,7], "moyenne", "gauche"); 
+            const rougeFantome = new Fantome("rouge", [9, 6], "forte", Directions.HAUT);
+            const bleuFantome = new Fantome("bleu", [8,7], "moyenne", Directions.HAUT); 
+            const orangeFantome = new Fantome("orange", [9,7], "moyenne", Directions.HAUT); 
             const roseFantome = new Fantome("rose", [10,7], "moyenne", "gauche"); 
 
             const fantomes = [rougeFantome, bleuFantome, orangeFantome, roseFantome];

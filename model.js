@@ -3,31 +3,29 @@ ElementType = {
   VIDE: 1,
   POINT: 2,
   ENERGIE: 3,
-}
+};
 
 Directions = {
-  GAUCHE: 0, 
-  DROITE: 1, 
-  HAUT: 2, 
-  BAS: 3, 
-}
-
+  GAUCHE: 0,
+  HAUT: 1,
+  DROITE: 2,
+  BAS: 3,
+};
 
 /* ************************************************************** */
-/*        Plateau jeu                                             */ 
+/*        Plateau jeu                                             */
 /* ************************************************************** */
 
 class PlateauJeu {
-  
   grille;
-  listeFantomes; 
+  listeFantomes;
   pacman;
   vitesse;
 
   constructor(grille, listeFantomes, pacman) {
-    this.grille = grille; 
+    this.grille = grille;
     this.listeFantomes = listeFantomes;
-    this.pacman = pacman; 
+    this.pacman = pacman;
     this.vitesse = 1000;
 
     setTimeout(() => this.avancer(), this.vitesse);
@@ -52,45 +50,79 @@ class PlateauJeu {
     }
   }
 
+  // Faire avancer le fantome rouge
+  // si fantome touche pacman il meurt 
+  
   avancer() {
-    // simuler le mouvement Pacman sans modifier sa position réelle (copie tableau)
-    let nouvellePositionPacman = [...this.pacman.position];
+    this.avancerPackman();
 
-    switch (this.pacman.direction) {
-        case Directions.GAUCHE:
-            nouvellePositionPacman[0] -= 1;
-            break;
-        case Directions.DROITE:
-            nouvellePositionPacman[0] += 1;
-            break;
-        case Directions.HAUT:
-            nouvellePositionPacman[1] -= 1;
-            break;
-        case Directions.BAS:
-            nouvellePositionPacman[1] += 1;
-            break;
-        default:
-            //console.log("Action avancer inconnue");
-    }
+    for (let phantom of this.listeFantomes)
+      switch (phantom.couleur) {
+        case "orange":
+          //case "rouge":
+            //case "rose":
+             //case "bleu":
+          this.avancerFantomeOrange(phantom);
+          break;
+      }
 
-    if (!this.detecterMur(nouvellePositionPacman)) {
-        this.pacman.position = nouvellePositionPacman;
-    }
-    // Avance en continu 
-    setTimeout(() => this.avancer(), this.vitesse); 
+    setTimeout(() => this.avancer(), this.vitesse);
   }
 
-  // effacer écran (voir rectBlank)
-  // tester si obstacle bordure
-  // autres directions
+  nextPosition(currentPosition, currentDirection) {
+    let newPosition = [...currentPosition];
 
+    switch (currentDirection) {
+      case Directions.GAUCHE:
+        newPosition[0] -= 1;
+        break;
+      case Directions.DROITE:
+        newPosition[0] += 1;
+        break;
+      case Directions.HAUT:
+        newPosition[1] -= 1;
+        break;
+      case Directions.BAS:
+        newPosition[1] += 1;
+        break;
+      default:
+      //console.log("Action avancer inconnue");
+    }
+    return newPosition;
+  }
 
-  detecterMur(positionPacman) {
+  avancerPackman() {
+    let nouvellePositionPacman = this.nextPosition(
+      this.pacman.position,
+      this.pacman.direction
+    );
+    if (!this.detecterMur(nouvellePositionPacman)) {
+      this.pacman.position = nouvellePositionPacman;
+    }
+  }
 
-    if (positionPacman[0] < 0 || positionPacman[1] < 0) return true;
-    if (positionPacman[0] > this.grille[0].length || positionPacman[0] > this.grille.length) return true;
+  avancerFantomeOrange(fantome) {
+    let position = fantome.position;
+    let nextP = this.nextPosition(position, fantome.direction);
 
-    const casePacman = this.grille[positionPacman[1]][positionPacman[0]];
+    if (!this.detecterMur(nextP)) {
+      fantome.position = nextP;
+    } else {
+      fantome.direction = Math.floor(Math.random() * 4);
+      let nextP = this.nextPosition(position, fantome.direction);
+      if (!this.detecterMur(nextP)) {
+        fantome.position = nextP;
+      }
+    }
+    console.log(fantome);
+  }
+
+  detecterMur(position) {
+    if (position[0] < 0 || position[1] < 0) return true;
+    if (position[0] > this.grille[0].length || position[0] > this.grille.length)
+      return true;
+
+    const casePacman = this.grille[position[1]][position[0]];
     if (casePacman === ElementType.MUR) return true;
 
     return false;
@@ -99,11 +131,10 @@ class PlateauJeu {
 }
 
 /* ************************************************************** */
-/*        Fantôme                                                 */ 
+/*        Fantôme                                                 */
 /* ************************************************************** */
 
 class Fantome {
-
   couleur;
   position; //[x, y]
   intelligence;
@@ -118,51 +149,46 @@ class Fantome {
 }
 
 /* ************************************************************** */
-/*        PacMan                                                  */ 
+/*        PacMan                                                  */
 /* ************************************************************** */
 
 class PacMan {
-
-  position;  //[x, y]
+  position; //[x, y]
   direction;
-  invincible; 
+  invincible;
   score;
 
   constructor(position, direction = null, invincible, score) {
     this.position = position;
-    this.direction = direction; 
+    this.direction = direction;
     this.invincible = invincible;
-    this.score = score; 
+    this.score = score;
   }
-  
 }
 
-
 /* ************************************************************** */
-/*        Fruit                                                   */ 
+/*        Fruit                                                   */
 /* ************************************************************** */
 
 class Fruit {
-
   nom;
   nbPoints;
   image;
   position;
 
   constructor(nom, nbPoints, image, position) {
-      this.nom = nom; 
-      this.nbPoints = nbPoints; 
-      this.image = image; 
-      this.position = position; 
+    this.nom = nom;
+    this.nbPoints = nbPoints;
+    this.image = image;
+    this.position = position;
   }
 }
 
 /* ************************************************************** */
-/*       Farbrique Fruit                                          */ 
+/*       Farbrique Fruit                                          */
 /* ************************************************************** */
 
 class FabriqueFruit {
-
   nomsFruits = ["Pomme", "Orange", "Cerise", "Banane"];
 
   // 0.99999999999999 => ]0,1[ * N => 0..N
@@ -174,7 +200,6 @@ class FabriqueFruit {
   }
 
   fabriquer(nomFruit) {
-
     if (!this.nomsFruits.includes(nomFruit)) {
       throw new Error("Fruit inconnu");
     }
