@@ -28,7 +28,7 @@ class PlateauJeu {
     this.pacman = pacman;
     this.vitesse = 1000;
 
-    setTimeout(() => this.avancer(), this.vitesse);
+    //setTimeout(() => this.avancer(), this.vitesse);
   }
 
   dirigerPacman(direction) {
@@ -51,8 +51,8 @@ class PlateauJeu {
   }
 
   // Faire avancer le fantome rouge
-  // si fantome touche pacman il meurt 
-  
+  // si fantome touche pacman il meurt
+
   avancer() {
     this.avancerPackman();
 
@@ -60,9 +60,11 @@ class PlateauJeu {
       switch (phantom.couleur) {
         case "orange":
           //case "rouge":
-            //case "rose":
-             //case "bleu":
-          this.avancerFantomeOrange(phantom);
+
+          //case "rose":
+          //case "bleu":
+          //this.avancerFantomeOrange(phantom);
+          //this.avancerFantomeRouge(phantom)
           break;
       }
 
@@ -101,6 +103,9 @@ class PlateauJeu {
     }
   }
 
+  /**
+   * Orange : avance aléatoirement
+   */
   avancerFantomeOrange(fantome) {
     let position = fantome.position;
     let nextP = this.nextPosition(position, fantome.direction);
@@ -117,6 +122,96 @@ class PlateauJeu {
     console.log(fantome);
   }
 
+  determinePlusCourtChemin(i1, j1, i2, j2) {
+    let casesVisitees = [];
+    let distances = new Set();
+    const deplacements = [
+      [0, 1], //droite
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+    ];
+    //console.log(this.grille)
+
+    for (let i = 0; i < this.grille.length; i++) {
+      let ligne = [];
+      for (let j = 0; j < this.grille[i].length; j++) {
+        if (this.grille[i][j] == ElementType.MUR) {
+          ligne.push(1);
+        } else {
+          ligne.push(0);
+        }
+      }
+      casesVisitees.push(ligne);
+    }
+
+    let queue = [[i1, j1, 0]];
+    while (queue.length > 0) {
+      console.table(queue);
+      let [i, j, d] = queue.shift();
+      if (i == i2 && j == j2) {distances.add(d);continue;}
+      casesVisitees[i][j] = 1;
+      for (let[di, dj] of deplacements) {
+        let ii = i + di;
+        let jj = j + dj;
+        if (
+          ii >= 0 &&
+          jj >= 0 &&
+          ii < this.grille[0].length &&
+          jj < this.grille.length
+        ) {
+          if (casesVisitees[ii][jj] == 0) {
+            casesVisitees[ii][jj] = 1;
+            queue.push([ii, jj, d + 1]);
+          }
+        }
+      }
+    }
+    return distances;
+  }
+  //valider la d (distance)
+  // memoriser le chemin parcouru 
+  
+
+  /**
+   * rouge : suit Pacman
+   * le + court chemin
+   */
+  avancerFantomeRouge(fantome) {
+    //let casesVisitees = grid[][]; // this.plateauJeu.grille
+    console.log(this.grille);
+
+    /*
+    let queue = position du phantom
+    while (queue non vide)
+    {
+      Pop(element);
+      if position element = pacman
+        enregistrer distance
+      si non{
+        on developpe les 4 points de voisinages
+        on push dans la que les points qui ne sont pas visite ni obstacle
+      }
+    }
+    on determine le min des distances 
+    */
+    // position du fantome
+
+    // position de pacman
+
+    // avoir les 4 directions possibles
+
+    // pour chaque dir possible
+
+    // Calculer position du fantôme dans la direction
+
+    // Check si un mur
+
+    // Calculer la distance entre position fantome et PacMan
+
+    // Voir si distance est plus courte
+  }
+
   detecterMur(position) {
     if (position[0] < 0 || position[1] < 0) return true;
     if (position[0] > this.grille[0].length || position[0] > this.grille.length)
@@ -127,7 +222,6 @@ class PlateauJeu {
 
     return false;
   }
-
 }
 
 /* ************************************************************** */
