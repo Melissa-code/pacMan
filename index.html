@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Jeu Pac-Man</title>
+        <link rel="icon" type="image/svg" href="assets/images/pacman.svg" />
+        <title>Pac-Man</title>
     </head>
 
     <body>
@@ -16,7 +17,7 @@
             </div>
             <div id="game">
                  <!-- Score -->
-                <div id="score">Score: 0</div>
+                <div id="score">Score: </div>
                  <!-- Grid -->
                 <canvas id="myCanvas"></canvas>
             </div>
@@ -56,12 +57,13 @@
             const fantomes = [rougeFantome, bleuFantome, orangeFantome, roseFantome];
 
             // constructor(position, direction = null, invincible, score)// col ligne {
-            const pacman = new PacMan([9, 9], false, 0); 
+            const pacman = new PacMan([9, 9], false); 
 
             const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes, pacman);
             const vue = new Vue(plateauDeJeu, document, 50);
 
-            console.log(plateauDeJeu.determinePlusCourtChemin(3, 3, 5, 3));
+            console.log(plateauDeJeu.determinePlusCourtChemin(7, 9, 9, 9));
+      
 
         </script>
         

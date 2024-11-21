@@ -5,6 +5,8 @@ class Vue {
         this.myCanva = document.getElementById("myCanvas");; 
         this.tailleCarreau = tailleCarreau; 
         this.ctx = this.myCanva.getContext("2d");
+        console.log(this.ctx.font);
+        
         this.myCanva.width = this.plateauDeJeu.grille[0].length * this.tailleCarreau;
         this.myCanva.height = this.plateauDeJeu.grille.length * this.tailleCarreau;
     
@@ -60,8 +62,9 @@ class Vue {
 
     afficherPlateauJeu() {
         // Efface le canvas
+        this.ctx.fillStyle = 'white';
         this.ctx.clearRect(0, 0, this.myCanva.width, this.myCanva.height);
-
+        
         for (let y = 0; y < this.plateauDeJeu.grille.length; y++) {
             for (let x = 0; x < this.plateauDeJeu.grille[y].length; x++) {
                 // Affiche les éléments du plateau de jeu (mur, energie, vide, point))
@@ -75,6 +78,7 @@ class Vue {
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
                     case ElementType.POINT:
+                        
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'yellow', 'yellow', 2)
                         break;
                     case ElementType.ENERGIE:
@@ -85,6 +89,9 @@ class Vue {
                 }
             }
         }
+        this.ctx.fillStyle = 'white';
+        this.ctx.font='16px sans-serif';
+        this.ctx.fillText('Score: '+this.plateauDeJeu.pacman.score, this.myCanva.width/2,this.tailleCarreau/2 )
 
         // Affiche les fantômes 
         for (let i = 0; i < this.imagesFantomes.length; i++) {
