@@ -28,7 +28,7 @@ class PlateauJeu {
     this.pacman = pacman;
     this.vitesse = 1000;
 
-    //setTimeout(() => this.avancer(), this.vitesse);
+    setTimeout(() => this.avancer(), this.vitesse);
   }
 
   dirigerPacman(direction) {
@@ -49,9 +49,6 @@ class PlateauJeu {
         console.log("Action inconnue:" + direction);
     }
   }
-
-  // Faire avancer le fantome rouge
-  // si fantome touche pacman il meurt
 
   avancer() {
     this.avancerPackman();
@@ -104,7 +101,7 @@ class PlateauJeu {
   }
 
   /**
-   * Orange : avance aléatoirement
+   * Fantôme orange : avance aléatoirement
    */
   avancerFantomeOrange(fantome) {
     let position = fantome.position;
@@ -114,7 +111,7 @@ class PlateauJeu {
       fantome.position = nextP;
     } else {
       fantome.direction = Math.floor(Math.random() * 4);
-      let nextP = this.nextPosition(position, fantome.direction);
+      //let nextP = this.nextPosition(position, fantome.direction);
       if (!this.detecterMur(nextP)) {
         fantome.position = nextP;
       }
@@ -122,65 +119,86 @@ class PlateauJeu {
     console.log(fantome);
   }
 
+  /** 
+   * Point départ i1 j1 et arrivée i2 j2
+   */
   determinePlusCourtChemin(i1, j1, i2, j2) {
-    let casesVisitees = [];
-    let distances = new Set();
+    // masque grille contient cases 0 (accessibles) ou 1 (mur)
+    let casesVisitees = []; 
+    
+    // directions déplacements dans la grille
     const deplacements = [
       [0, 1], //droite
       [0, -1],
-      [1, 0],
+      [1, 0], //bas
       [-1, 0],
     ];
-    //console.log(this.grille)
 
+    // représentation de la grille dans casesVisitees[]
     for (let i = 0; i < this.grille.length; i++) {
       let ligne = [];
       for (let j = 0; j < this.grille[i].length; j++) {
         if (this.grille[i][j] == ElementType.MUR) {
-          ligne.push(1);
+          ligne.push([-2, -2]); //mur
         } else {
-          ligne.push(0);
+          ligne.push([-1, -1]);
         }
       }
       casesVisitees.push(ligne);
     }
 
-    let queue = [[i1, j1, 0]];
+    // algorithme de recherche en largeur (BFS): Breadth-First Search
+    // pour trouver le plus court chemin dans une grille
+    // file d'attente (queue) contient les cases à explorer: point départ et dist 0 
+    let queue = [[i1, j1, 0 ]];
+    let i = 0, j = 0, d = 0;
+
+    // la distance d correspond déjà au plus court chemin
     while (queue.length > 0) {
-      console.table(queue);
-      let [i, j, d] = queue.shift();
-      if (i == i2 && j == j2) {distances.add(d);continue;}
-      casesVisitees[i][j] = 1;
+      // position actuelle fantôme
+      [i, j, d] = queue.shift(); 
+      
+      if (i == i2 && j == j2) { 
+        break;
+      }
+
+      // Calcul des coordonnées du voisin [ii, jj] à partir de i et j
       for (let[di, dj] of deplacements) {
         let ii = i + di;
         let jj = j + dj;
-        if (
-          ii >= 0 &&
-          jj >= 0 &&
-          ii < this.grille[0].length &&
-          jj < this.grille.length
-        ) {
-          if (casesVisitees[ii][jj] == 0) {
-            casesVisitees[ii][jj] = 1;
-            queue.push([ii, jj, d + 1]);
+        // check si dans limites de la grille et que la case n'est pas visitée -1
+        if (ii >= 0 && jj >= 0 && ii < this.grille[0].length && jj < this.grille.length) {
+          if (JSON.stringify(casesVisitees[ii][jj]) == JSON.stringify([-1, -1])) {
+            // case voisine devient visitée on enregistre le parent [i,j]
+            // et ajout de case voisine dans queue avec une distance incrémentée +1
+            casesVisitees[ii][jj] = [i, j];
+            queue.push([ii, jj, d + 1]); // cases à explorer 
           }
         }
       }
     }
-    return distances;
-  }
-  //valider la d (distance)
-  // memoriser le chemin parcouru 
-  
 
+    [i, j] = casesVisitees[i2][j2];
+    
+    let chemin = [[i2, j2]]
+    
+    while (i!=i1 || j!=j1) {
+      //cases du chemin dans l’ordre du départ à l’arrivée à la fin de la boucle
+      chemin.unshift([i,j]); 
+      [i, j] = casesVisitees[i][j];
+    }
+    
+    //ajouter [i, j] au début du tableau chemin
+    chemin.unshift([i, j]);
+
+    return chemin;
+  }
+  
   /**
-   * rouge : suit Pacman
-   * le + court chemin
+   * Fantôme rouge : suit Pacman le + court chemin
    */
   avancerFantomeRouge(fantome) {
-    //let casesVisitees = grid[][]; // this.plateauJeu.grille
-    console.log(this.grille);
-
+    
     /*
     let queue = position du phantom
     while (queue non vide)
@@ -190,7 +208,7 @@ class PlateauJeu {
         enregistrer distance
       si non{
         on developpe les 4 points de voisinages
-        on push dans la que les points qui ne sont pas visite ni obstacle
+        on push dans la queue les points qui ne sont pas visites ni obstacle
       }
     }
     on determine le min des distances 

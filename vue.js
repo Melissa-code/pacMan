@@ -59,8 +59,7 @@ class Vue {
 
 
     afficherPlateauJeu() {
-
-        // Efface le canvas 
+        // Efface le canvas
         this.ctx.clearRect(0, 0, this.myCanva.width, this.myCanva.height);
 
         for (let y = 0; y < this.plateauDeJeu.grille.length; y++) {
@@ -119,5 +118,4 @@ class Vue {
           ctx.stroke()
         }
     }
-
 }

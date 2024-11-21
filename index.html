@@ -45,6 +45,8 @@
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             ];
 
+            
+
             // constructor(couleur, position, intelligence, direction)
             const rougeFantome = new Fantome("rouge", [9, 6], "forte", Directions.HAUT);
             const bleuFantome = new Fantome("bleu", [8,7], "moyenne", Directions.HAUT); 
@@ -59,7 +61,7 @@
             const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes, pacman);
             const vue = new Vue(plateauDeJeu, document, 50);
 
-            console.log(plateauDeJeu.determinePlusCourtChemin(1, 2, 6, 6));
+            console.log(plateauDeJeu.determinePlusCourtChemin(3, 3, 5, 3));
 
         </script>
         
