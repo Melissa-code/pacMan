@@ -5,7 +5,6 @@ class Vue {
         this.myCanva = document.getElementById("myCanvas");; 
         this.tailleCarreau = tailleCarreau; 
         this.ctx = this.myCanva.getContext("2d");
-        console.log(this.ctx.font);
         
         this.myCanva.width = this.plateauDeJeu.grille[0].length * this.tailleCarreau;
         this.myCanva.height = this.plateauDeJeu.grille.length * this.tailleCarreau;
@@ -70,16 +69,16 @@ class Vue {
                 // Affiche les éléments du plateau de jeu (mur, energie, vide, point))
                 switch (this.plateauDeJeu.grille[y][x]) {
                     case ElementType.MUR:
-                        this.ctx.fillStyle = 'black';
+                        this.ctx.fillStyle = 'yellow';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
                     case ElementType.VIDE:
-                        this.ctx.fillStyle = 'white';
+                        this.ctx.fillStyle = 'black';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
                     case ElementType.POINT:
                         
-                        this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'yellow', 'yellow', 2)
+                        this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'pink', 'pink', 2)
                         break;
                     case ElementType.ENERGIE:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/5, 'red', 'red', 2)
@@ -90,7 +89,7 @@ class Vue {
             }
         }
         this.ctx.fillStyle = 'white';
-        this.ctx.font='16px sans-serif';
+        this.ctx.font='22px verdana';
         this.ctx.fillText('Score: '+this.plateauDeJeu.pacman.score, this.myCanva.width/2,this.tailleCarreau/2 )
 
         // Affiche les fantômes 

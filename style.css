@@ -1,0 +1,40 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    font-family: "Press Start 2P, monospace";
+    background-color: #000;
+    color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 40px;
+    color: yellow;
+    text-shadow: 3px 3px 0px red, 6px 6px 0px blue;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+#game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid yellow;
+    padding: 10px; 
+    width: fit-content;
+  }
+  
+canvas {
+    background-color: black;
+    display: block; 
+}

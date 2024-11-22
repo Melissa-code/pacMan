@@ -4,6 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/svg" href="assets/images/pacman.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
         <title>Pac-Man</title>
     </head>
 
@@ -13,12 +17,10 @@
             <div class="message"></div>
             <!-- Title  -->
             <div class="title">
-                <h1 style="font-family: 'VT323', monospace; font-size: 24px;">Pac-Man</h1>
+                <h1>Pac-Man</h1>
             </div>
             <div id="game">
-                 <!-- Score -->
-                <div id="score">Score: </div>
-                 <!-- Grid -->
+                <!-- Grid -->
                 <canvas id="myCanvas"></canvas>
             </div>
         </div>
@@ -46,8 +48,6 @@
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             ];
 
-            
-
             // constructor(couleur, position, intelligence, direction)
             const rougeFantome = new Fantome("rouge", [9, 6], "forte", Directions.HAUT);
             const bleuFantome = new Fantome("bleu", [8,7], "moyenne", Directions.HAUT); 
@@ -64,7 +64,6 @@
 
             console.log(plateauDeJeu.determinePlusCourtChemin(7, 9, 9, 9));
       
-
         </script>
         
     </body>

@@ -67,10 +67,10 @@ class PlateauJeu {
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
         case "orange":
-          this.avancerFantomeOrange(fantome);
+          // this.avancerFantomeOrange(fantome);
         break;
         case "rouge":
-          this.avancerFantomeRouge(fantome);
+          // this.avancerFantomeRouge(fantome);
         break; 
           //case "rose":
           //case "bleu":
