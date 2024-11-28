@@ -76,12 +76,11 @@ class Vue {
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
                         break;
                     case ElementType.POINT:
-                        
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'pink', 'pink', 2)
                         break;
                     case ElementType.ENERGIE:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/5, 'red', 'red', 2)
-                        break;
+                    break;
                     default:
                         console.log("Erreur d'affichage de la grille de jeu.");
                 }

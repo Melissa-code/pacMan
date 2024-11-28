@@ -12,6 +12,8 @@ Directions = {
   BAS: 3,
 };
 
+
+
 /* ************************************************************** */
 /*        Plateau jeu                                             */
 /* ************************************************************** */
@@ -21,12 +23,25 @@ class PlateauJeu {
   listeFantomes;
   pacman;
   vitesse;
+  nbPastilles;
 
   constructor(grille, listeFantomes, pacman) {
     this.grille = grille;
     this.listeFantomes = listeFantomes;
     this.pacman = pacman;
     this.vitesse = 1000;
+    this.finduJeu = false;
+    this.nbPastilles = 0;
+    for (let i = 0; i < grille.length; i++) {
+      for (let j = 0; j < grille[i].length; j++) {
+        if (grille[i][j] == ElementType.POINT) {
+          this.nbPastilles++;
+        }
+      }
+      console.log(this.nbPastilles)
+      
+    }
+
 
     setTimeout(() => this.avancer(), this.vitesse);
   }
@@ -52,7 +67,7 @@ class PlateauJeu {
 
   detecterMur(position) {
     if (position[0] < 0 || position[1] < 0) return true;
-    if (position[0] > this.grille[0].length || position[0] > this.grille.length)
+    if (position[0] > this.grille[0].length || position[1] > this.grille.length)
       return true;
 
     const casePacman = this.grille[position[1]][position[0]];
@@ -62,22 +77,41 @@ class PlateauJeu {
   }
 
   avancer() {
+    console.log(this.finduJeu)
+    if (this.finduJeu) {
+      console.log("Partie terminée !");
+      return; 
+    }
+
     this.avancerPacman();
+
+    if (this.rencontrerFantome()) {
+      this.finduJeu = true; 
+      alert("Game Over :( !");
+
+      return;
+    } 
 
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
         case "orange":
-          // this.avancerFantomeOrange(fantome);
+          //this.avancerFantomeOrange(fantome);
         break;
         case "rouge":
-          // this.avancerFantomeRouge(fantome);
+          ///this.avancerFantomeRouge(fantome);
         break; 
           //case "rose":
           //case "bleu":
-          break;
+          //break;
       }
 
-    setTimeout(() => this.avancer(), this.vitesse);
+      if (this.rencontrerFantome()) {
+        this.finduJeu = true; 
+        alert("Game Over :( !");
+      } else {
+        setTimeout(() => this.avancer(), this.vitesse);
+      }
+    
   }
 
   nextPosition(currentPosition, currentDirection) {
@@ -86,16 +120,16 @@ class PlateauJeu {
     switch (currentDirection) {
       case Directions.GAUCHE:
         newPosition[0] -= 1;
-        break;
+      break;
       case Directions.DROITE:
         newPosition[0] += 1;
-        break;
+      break;
       case Directions.HAUT:
         newPosition[1] -= 1;
-        break;
+      break;
       case Directions.BAS:
         newPosition[1] += 1;
-        break;
+      break;
       default:
       //console.log("Action avancer inconnue");
     }
@@ -115,6 +149,13 @@ class PlateauJeu {
       if (this.grille[x][y] == ElementType.POINT) {
         this.grille[x][y] = ElementType.VIDE;
         this.pacman.score ++;
+        this.nbPastilles --;
+        console.log(this.nbPastilles)
+
+        if (this.nbPastilles == 0) {
+          alert("Bravo vous avez gagné :)!")
+          this.finduJeu = true; 
+        }
       }
     }
   }
@@ -206,9 +247,9 @@ class PlateauJeu {
     
     let chemin = [[i2, j2]]
     
-    while (i!=i1 || j!=j1) {
+    while (i != i1 || j != j1) {
       //cases du chemin dans l’ordre du départ à l’arrivée à la fin de la boucle
-      if (i==-1 || j==-1)
+      if (i == -1 || j == -1)
         break;
       chemin.unshift([i,j]); 
       [i, j] = casesVisitees[i][j];
@@ -239,9 +280,29 @@ class PlateauJeu {
     }
   }
 
+  // Pacman rencontre un fantôme
+  rencontrerFantome() {
+    //console.log(this.listeFantomes)
+    for (let fantome of this.listeFantomes) {
+      if (
+        this.pacman.position[0] === fantome.position[0]
+        && this.pacman.position[1] === fantome.position[1]
+      ) {
+        
+        return true;  
+      }
+    }
+
+    return false;
+  }
+
+  tousLesPointsManges() {
+
+  }
+
   // faire energie
   // apparaitre les fruits 
-  // test d'arret : game over et bloque jeu
+
 }
 
 /* ************************************************************** */
