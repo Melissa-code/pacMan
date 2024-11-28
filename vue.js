@@ -41,8 +41,7 @@ class Vue {
         this.imagePacman = image;
     }
 
-    initControl(document)
-    {
+    initControl(document) {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowLeft') {
                 this.plateauDeJeu.dirigerPacman('gauche');               
@@ -88,9 +87,10 @@ class Vue {
                 }
             }
         }
-        this.ctx.fillStyle = 'white';
-        this.ctx.font='22px verdana';
-        this.ctx.fillText('Score: '+this.plateauDeJeu.pacman.score, this.myCanva.width/2,this.tailleCarreau/2 )
+        this.ctx.fillStyle = 'black';
+        this.ctx.font='22px Orbitron';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('Score: ' + this.plateauDeJeu.pacman.score, this.myCanva.width/2, this.tailleCarreau/2)
 
         // Affiche les fantômes 
         for (let i = 0; i < this.imagesFantomes.length; i++) {
@@ -105,7 +105,35 @@ class Vue {
         // Affiche Pacman
         if (this.imagePacman.complete) {
             const pacman = this.plateauDeJeu.pacman;
-            this.ctx.drawImage(this.imagePacman, pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
+
+            this.ctx.save();
+            
+            let angle = 0;
+            switch (pacman.direction) {
+                case Directions.HAUT:
+                    angle = -Math.PI / 2; 
+                    break;
+                case Directions.BAS:
+                    angle = Math.PI / 2;  
+                    break;
+                case Directions.GAUCHE:
+                    angle = Math.PI;     
+                    break;
+                case Directions.DROITE:
+                    angle = 0; 
+                    break;
+            }
+           
+            this.ctx.translate(
+                pacman.position[0] * this.tailleCarreau + this.tailleCarreau / 2,
+                pacman.position[1] * this.tailleCarreau + this.tailleCarreau / 2
+            );
+
+            this.ctx.rotate(angle);
+            this.ctx.drawImage(this.imagePacman, -this.tailleCarreau / 4, -this.tailleCarreau / 4, this.tailleCarreau / 2, this.tailleCarreau / 2);
+            //this.ctx.drawImage(this.imagePacman, pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
+        
+            this.ctx.restore();
         }
         
         setTimeout(() => this.afficherPlateauJeu(), 200);
@@ -125,3 +153,6 @@ class Vue {
         }
     }
 }
+
+
+
