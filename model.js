@@ -12,8 +12,6 @@ Directions = {
   BAS: 3,
 };
 
-
-
 /* ************************************************************** */
 /*        Plateau jeu                                             */
 /* ************************************************************** */
@@ -24,6 +22,9 @@ class PlateauJeu {
   pacman;
   vitesse;
   nbPastilles;
+  nbEnergies = 4;
+  etatEnergie = false;
+
 
   constructor(grille, listeFantomes, pacman) {
     this.grille = grille;
@@ -32,17 +33,7 @@ class PlateauJeu {
     this.vitesse = 1000;
     this.finduJeu = false;
     this.nbPastilles = 0;
-    for (let i = 0; i < grille.length; i++) {
-      for (let j = 0; j < grille[i].length; j++) {
-        if (grille[i][j] == ElementType.POINT) {
-          this.nbPastilles++;
-        }
-      }
-      console.log(this.nbPastilles)
-      
-    }
-
-
+    
     setTimeout(() => this.avancer(), this.vitesse);
   }
 
@@ -77,7 +68,6 @@ class PlateauJeu {
   }
 
   avancer() {
-    console.log(this.finduJeu)
     if (this.finduJeu) {
       console.log("Partie terminée !");
       return; 
@@ -86,32 +76,40 @@ class PlateauJeu {
     this.avancerPacman();
 
     if (this.rencontrerFantome()) {
-      this.finduJeu = true; 
-      alert("Game Over :( !");
-
-      return;
+      if (this.etatEnergie == true) {
+        this.pacman.score += 200;
+        console.log(this.etatEnergie)
+        console.log(this.pacman.score)
+        
+      } else {
+        this.finduJeu = true; 
+        alert("Game Over :( !");
+  
+        return;
+      }
+      
     } 
+
 
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
         case "orange":
-          //this.avancerFantomeOrange(fantome);
+           this.avancerFantomeOrange(fantome);
         break;
         case "rouge":
-          ///this.avancerFantomeRouge(fantome);
+           this.avancerFantomeRouge(fantome);
         break; 
-          //case "rose":
-          //case "bleu":
-          //break;
+        //case "rose":
+        //case "bleu":
+        //break;
       }
 
-      if (this.rencontrerFantome()) {
+      if (this.rencontrerFantome() && !this.etatEnergie) {
         this.finduJeu = true; 
         alert("Game Over :( !");
       } else {
         setTimeout(() => this.avancer(), this.vitesse);
       }
-    
   }
 
   nextPosition(currentPosition, currentDirection) {
@@ -133,11 +131,12 @@ class PlateauJeu {
       default:
       //console.log("Action avancer inconnue");
     }
+
     return newPosition;
   }
 
   avancerPacman() {
-    let nouvellePositionPacman = this.nextPosition(
+    let nouvellePositionPacman = this.nextPosition (
       this.pacman.position,
       this.pacman.direction
     );
@@ -145,20 +144,40 @@ class PlateauJeu {
       this.pacman.position = nouvellePositionPacman;
 
       let [y, x] = this.pacman.position;
-      //console.log(this.pacman.position)
+
+      // Mange les points
       if (this.grille[x][y] == ElementType.POINT) {
         this.grille[x][y] = ElementType.VIDE;
         this.pacman.score ++;
         this.nbPastilles --;
-        console.log(this.nbPastilles)
 
-        if (this.nbPastilles == 0) {
+        if (this.nbPastilles == 0 && this.nbEnergies == 0) {
           alert("Bravo vous avez gagné :)!")
           this.finduJeu = true; 
         }
-      }
+      } 
+
+      // Mange l'énergie (score +50)
+      if (this.grille[x][y] == ElementType.ENERGIE) {
+        this.grille[x][y] = ElementType.VIDE;
+        this.pacman.score += 50;
+        this.nbEnergies --;
+        //console.log(this.nbEnergies)
+
+        this.fantomesDeviennentBleus("bleu", 10000);
+      } 
     }
   }
+
+  fantomesDeviennentBleus(nouvelleCouleurBleue, duree) {
+    console.log('Changement de couleur des fantômes en bleu');
+    this.etatEnergie = true;
+
+    // Restaure les couleurs 
+    setTimeout(() => {
+        this.etatEnergie = false; 
+    }, duree);
+  } 
 
   /**
    * Fantôme orange : avance aléatoirement
@@ -182,7 +201,7 @@ class PlateauJeu {
    * Point départ i1 j1 et arrivée i2 j2
    */
   determinePlusCourtChemin(i1, j1, i2, j2) {
-    // masque grille contient cases 0 (accessibles) ou 1 (mur)
+    // masque grille : contient cases 0 (accessibles) ou 1 (mur)
     let casesVisitees = []; 
     
     // directions déplacements dans la grille
@@ -296,12 +315,14 @@ class PlateauJeu {
     return false;
   }
 
-  tousLesPointsManges() {
+  // faire energie: après pacman ne doit pas etre collé au fantome 
+  // fantome ne doit pas suivre pacman
+  // ajouter bleu clair (de base) pour 3e fantome 
 
-  }
 
-  // faire energie
   // apparaitre les fruits 
+
+
 
 }
 
@@ -360,7 +381,7 @@ class Fruit {
 }
 
 /* ************************************************************** */
-/*       Farbrique Fruit                                          */
+/*       Fabrique Fruit                                          */
 /* ************************************************************** */
 
 class FabriqueFruit {

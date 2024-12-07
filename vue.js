@@ -9,6 +9,8 @@ class Vue {
         this.myCanva.width = this.plateauDeJeu.grille[0].length * this.tailleCarreau;
         this.myCanva.height = this.plateauDeJeu.grille.length * this.tailleCarreau;
     
+        this.imageEnergie = new Image();
+        this.imageEnergie.src = 'assets/images/bleu.svg'; 
         this.imagesFantomes = [];
         this.chargerImagesFantomes();
         this.imagePacman = ''; 
@@ -18,20 +20,28 @@ class Vue {
     }
 
     chargerImagesFantomes() {
+        // this.imageEnergie.addEventListener("load", () => {
+        //     // 
+        // }, false);
+
+        this.imagesFantomes=[];
         for (const fantome of this.plateauDeJeu.listeFantomes) {
-            let image = new Image();
+            const image = new Image();
+
             // Charge l'image
             image.addEventListener("load", () => {
-                this.ctx.drawImage(image, fantome.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), fantome.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
+                // 
             }, false);
-    
-            image.src = 'assets/images/' + fantome.couleur + '.svg'; 
+
+            image.src = 'assets/images/' + fantome.couleur + '.svg';   
             this.imagesFantomes.push(image);
         }
     }
 
+   
+    
     chargerImagePacman() {
-        let image = new Image();
+        const image = new Image();
         // Charge l'image
         image.addEventListener("load", () => {
             this.ctx.drawImage(image, this.plateauDeJeu.pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.plateauDeJeu.pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
@@ -59,6 +69,8 @@ class Vue {
 
 
     afficherPlateauJeu() {
+        //this.chargerImagesFantomes();
+
         // Efface le canvas
         this.ctx.fillStyle = 'white';
         this.ctx.clearRect(0, 0, this.myCanva.width, this.myCanva.height);
@@ -87,17 +99,32 @@ class Vue {
             }
         }
         this.ctx.fillStyle = 'black';
-        this.ctx.font='22px Orbitron';
+        this.ctx.font = '22px Orbitron';
         this.ctx.textAlign = 'center';
         this.ctx.fillText('Score: ' + this.plateauDeJeu.pacman.score, this.myCanva.width/2, this.tailleCarreau/2)
 
         // Affiche les fantômes 
+        let image;
+
         for (let i = 0; i < this.imagesFantomes.length; i++) {
-            const image = this.imagesFantomes[i];
+            if (this.plateauDeJeu.etatEnergie == true) {
+                image = this.imageEnergie;
+                console.log("fantome bleu")
+            } else {
+                image = this.imagesFantomes[i];
+                console.log("fantome couleur")
+            }
+           
             const fantome = this.plateauDeJeu.listeFantomes[i];
-            // Dessiner uniquement si l'image chargée
+
             if (image.complete) {
-                this.ctx.drawImage(image, fantome.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), fantome.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
+                this.ctx.drawImage(
+                    image,
+                    fantome.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau),
+                    fantome.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau),
+                    this.tailleCarreau / 2,
+                    this.tailleCarreau / 2
+                );
             }
         }
         
