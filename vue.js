@@ -10,22 +10,32 @@ class Vue {
         this.myCanva.height = this.plateauDeJeu.grille.length * this.tailleCarreau;
     
         this.imageEnergie = new Image();
-        this.imageEnergie.src = 'assets/images/bleu.svg'; 
+        this.imageEnergie.src = 'assets/images/personnages/bleu.svg'; 
         this.imagesFantomes = [];
         this.chargerImagesFantomes();
         this.imagePacman = ''; 
         this.chargerImagePacman(); 
+        this.fruitsImages = {};
+        this.chargerImagesFruits();
+
         this.afficherPlateauJeu();
-        this.initControl(document); 
-        this.imageFruit = ''; 
-        //this.chargerImageFruit();
+        this.initControl(document);
+    }
+
+    chargerImagesFruits() {
+        for (const fruit of this.plateauDeJeu.fruits) {
+            const image = new Image();
+            // Charge l'image
+            image.addEventListener("load", () => {}, false);
+            image.src = 'assets/images/fruits/' + fruit.image;
+            this.fruitsImages[fruit.type] = image;
+        }
     }
 
     chargerImagesFantomes() {
-        this.imagesFantomes=[];
+        this.imagesFantomes = [];
         for (const fantome of this.plateauDeJeu.listeFantomes) {
             const image = new Image();
-            // Charge l'image
             image.addEventListener("load", () => {}, false);
             image.src = 'assets/images/personnages/' + fantome.couleur + '.svg';   
             this.imagesFantomes.push(image);
@@ -34,7 +44,6 @@ class Vue {
 
     chargerImagePacman() {
         const image = new Image();
-        // Charge l'image
         image.addEventListener("load", () => {
             this.ctx.drawImage(
                 image, 
@@ -48,31 +57,20 @@ class Vue {
         this.imagePacman = image;
     }
 
-    afficherFruit(x,y) {
-        const fruit = this.plateauDeJeu.fruitPosition(x,y);
-        const image = new Image();
-        image.addEventListener("load", () => {
+    afficherFruit(x, y) {
+        const fruit = this.plateauDeJeu.fruitPosition(x, y); 
+        if (fruit && this.fruitsImages[fruit.type]) {
+            const image = this.fruitsImages[fruit.type]; 
             this.ctx.drawImage(
                 image,
-                x * this.tailleCarreau + (0.25 * this.tailleCarreau), 
+                x * this.tailleCarreau + (0.25 * this.tailleCarreau),
                 y * this.tailleCarreau + (0.25 * this.tailleCarreau),
-                this.tailleCarreau /2,  
-                this.tailleCarreau /2
-            )
-        }, false);
-        image.src = 'assets/images/fruits/' + fruit.image; 
-
-        // image.onload = () => {
-        //     this.ctx.drawImage(
-        //         image,
-        //         x * this.tailleCarreau + (0.25 * this.tailleCarreau), 
-        //         y * this.tailleCarreau + (0.25 * this.tailleCarreau),
-        //         this.tailleCarreau /2,  
-        //         this.tailleCarreau /2
-        //     );
-        // };
+                this.tailleCarreau / 2,
+                this.tailleCarreau / 2
+            );
+        }
     }
-
+    
     initControl(document) {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowLeft') {
@@ -120,6 +118,8 @@ class Vue {
                 }
             }
         }
+
+        // Affiche score
         this.ctx.fillStyle = 'black';
         this.ctx.font = '22px Orbitron';
         this.ctx.textAlign = 'center';
@@ -173,13 +173,9 @@ class Vue {
 
             this.ctx.rotate(angle);
             this.ctx.drawImage(this.imagePacman, -this.tailleCarreau / 4, -this.tailleCarreau / 4, this.tailleCarreau / 2, this.tailleCarreau / 2);
-            //this.ctx.drawImage(this.imagePacman, pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
-    
             this.ctx.restore();
         }
-
-        // Affiche les fruits aléatoirement 
- 
+       
         setTimeout(() => this.afficherPlateauJeu(), 100);
     }
       

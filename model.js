@@ -90,7 +90,6 @@ class PlateauJeu {
         
       } else {
         this.finduJeu = true; 
-        //alert("Game Over :( !");
         console.log("Partie terminée !");
   
         return;
@@ -101,7 +100,7 @@ class PlateauJeu {
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
         case "orange":
-           this.avancerFantomeOrange(fantome);
+           this.avancerCommeFantomeOrange(fantome);
         break;
         case "rouge":
            this.avancerFantomeRouge(fantome);
@@ -113,7 +112,6 @@ class PlateauJeu {
 
       if (this.rencontrerFantome() && !this.etatEnergie) {
         this.finduJeu = true; 
-        //alert("Game Over :( !");
         console.log("Partie terminée !");
       } else {
         setTimeout(() => this.avancer(), this.vitesse);
@@ -160,7 +158,7 @@ class PlateauJeu {
         this.nbPastilles --;
 
         if (this.nbPastilles == 0 && this.nbEnergies == 0) {
-          alert("Bravo vous avez gagné :)!")
+          console.log("Bravo vous avez gagné :)!");
           this.finduJeu = true; 
         }
       } 
@@ -189,7 +187,7 @@ class PlateauJeu {
   /**
    * Fantôme orange : avance aléatoirement
    */
-  avancerFantomeOrange(fantome) {
+  avancerCommeFantomeOrange(fantome) {
     let position = fantome.position;
     let nextP = this.nextPosition(position, fantome.direction);
 
@@ -201,7 +199,6 @@ class PlateauJeu {
         fantome.position = nextP;
       }
     }
-    //console.log(fantome);
   }
 
   /** 
@@ -254,7 +251,6 @@ class PlateauJeu {
         // check si dans limites de la grille et que la case n'est pas visitée -1
         if (ii >= 0 && jj >= 0 
           && ii < this.grille.length && jj < this.grille[0].length) {
-            //console.log(`Vérification de la case voisine [${ii}, ${jj}]`);
           if (JSON.stringify(casesVisitees[ii][jj]) == JSON.stringify([-1, -1])) {
             // case voisine devient visitée on enregistre le parent [i,j]
             // et ajout de case voisine dans queue avec une distance incrémentée +1
@@ -270,7 +266,6 @@ class PlateauJeu {
     }
 
     [i, j] = casesVisitees[i2][j2];
-    
     let chemin = [[i2, j2]]
     
     while (i != i1 || j != j1) {
@@ -280,7 +275,6 @@ class PlateauJeu {
       chemin.unshift([i,j]); 
       [i, j] = casesVisitees[i][j];
     }
-
     //ajouter [i, j] au début du tableau chemin
     chemin.unshift([i, j]);
 
@@ -292,7 +286,7 @@ class PlateauJeu {
    */
   avancerFantomeRouge(fantome) {
     if (this.etatEnergie) {
-      this.avancerFantomeOrange(fantome);
+      this.avancerCommeFantomeOrange(fantome);
       return;
     }
 
@@ -330,24 +324,20 @@ class PlateauJeu {
   //afficher game over à côté du score sans alert
 
   ajouterFruitAleatoirement() {
-    //console.log(this.fruits)
-    const x = Math.floor(Math.random() * this.grille[0].length);  
-    const y = Math.floor(Math.random() * this.grille.length);   
-    //console.log(x, y)
-    this.grille[y][x] = ElementType.VIDE
-    while (this.grille[y][x] != ElementType.VIDE) {
-      const x = Math.floor(Math.random() * this.grille[0].length);  
-      const y = Math.floor(Math.random() * this.grille.length);   
-      //console.log(x, y)
-    }
-      const fruits = ["Pomme", "Orange", "Cerise", "Banane"];
-      const fruitNom = fruits[Math.floor(Math.random() * fruits.length)];
+    let x, y;
+    // fruit dans case vide
+    do {
+        x = Math.floor(Math.random() * this.grille[0].length);  
+        y = Math.floor(Math.random() * this.grille.length);   
+    } while (this.grille[y][x] !== ElementType.VIDE);  
 
-    
-      const fruit = new Fruit(fruitNom, [x, y]);
-      this.grille[y][x] = ElementType.FRUIT; 
-      this.fruits.push(fruit);
-      //console.log("Fruit : ", fruit);
+    const fruits = ["pomme", "orange", "cerise", "banane"];
+    const fruitNom = fruits[Math.floor(Math.random() * fruits.length)];
+  
+    const fruit = new Fruit(fruitNom, [x, y]);
+    this.grille[y][x] = ElementType.FRUIT; 
+    this.fruits.push(fruit);  
+    //console.log("Fruit ajouté : ", fruit);
   }
 
   fruitPosition(x,y) {
@@ -409,7 +399,7 @@ class Fruit {
   constructor(nom, position) {
     this.nom = nom;
     this.position = position;
-    this.nbPoints = nom === "Pomme" ? 100 : (nom === "Orange" ? 150 : (nom === "Cerise" ? 200 : 250));
+    this.nbPoints = nom === "pomme" ? 100 : (nom === "orange" ? 150 : (nom === "cerise" ? 200 : 250));
     this.image  = nom.toLowerCase() + ".svg";
   }
 }
@@ -437,17 +427,17 @@ class FabriqueFruit {
     let fruit;
 
     switch (nomFruit) {
-      case "Pomme":
-        fruit = new Fruit(nomFruit, 100, "imgPomme.png", 0, 0);
+      case "pomme":
+        fruit = new Fruit(nomFruit, 100, "pomme.svg", 0, 0);
         break;
-      case "Orange":
-        fruit = new Fruit(nomFruit, 150, "imgOrange.png", 0, 0);
+      case "orange":
+        fruit = new Fruit(nomFruit, 150, "orange.svg", 0, 0);
         break;
-      case "Cerise":
-        fruit = new Fruit(nomFruit, 200, "imgCerise.png", 0, 0);
+      case "cerise":
+        fruit = new Fruit(nomFruit, 200, "cerise.svg", 0, 0);
         break;
-      case "Banane":
-        fruit = new Fruit(nomFruit, 250, "imgBanane.png", 0, 0);
+      case "banane":
+        fruit = new Fruit(nomFruit, 250, "banane.svg", 0, 0);
         break;
       default:
         console.log("Erreur: Fruit ", nomFruit, " inconnu.");
