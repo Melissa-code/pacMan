@@ -17,38 +17,60 @@ class Vue {
         this.chargerImagePacman(); 
         this.afficherPlateauJeu();
         this.initControl(document); 
+        this.imageFruit = ''; 
+        //this.chargerImageFruit();
     }
 
     chargerImagesFantomes() {
-        // this.imageEnergie.addEventListener("load", () => {
-        //     // 
-        // }, false);
-
         this.imagesFantomes=[];
         for (const fantome of this.plateauDeJeu.listeFantomes) {
             const image = new Image();
-
             // Charge l'image
-            image.addEventListener("load", () => {
-                // 
-            }, false);
-
-            image.src = 'assets/images/' + fantome.couleur + '.svg';   
+            image.addEventListener("load", () => {}, false);
+            image.src = 'assets/images/personnages/' + fantome.couleur + '.svg';   
             this.imagesFantomes.push(image);
         }
     }
 
-   
-    
     chargerImagePacman() {
         const image = new Image();
         // Charge l'image
         image.addEventListener("load", () => {
-            this.ctx.drawImage(image, this.plateauDeJeu.pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.plateauDeJeu.pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau/2, this.tailleCarreau/2);
+            this.ctx.drawImage(
+                image, 
+                this.plateauDeJeu.pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), 
+                this.plateauDeJeu.pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), 
+                this.tailleCarreau/2, 
+                this.tailleCarreau/2
+            );
         }, false);
-
-        image.src = 'assets/images/pacman.svg'; 
+        image.src = 'assets/images/personnages/pacman.svg'; 
         this.imagePacman = image;
+    }
+
+    afficherFruit(x,y) {
+        const fruit = this.plateauDeJeu.fruitPosition(x,y);
+        const image = new Image();
+        image.addEventListener("load", () => {
+            this.ctx.drawImage(
+                image,
+                x * this.tailleCarreau + (0.25 * this.tailleCarreau), 
+                y * this.tailleCarreau + (0.25 * this.tailleCarreau),
+                this.tailleCarreau /2,  
+                this.tailleCarreau /2
+            )
+        }, false);
+        image.src = 'assets/images/fruits/' + fruit.image; 
+
+        // image.onload = () => {
+        //     this.ctx.drawImage(
+        //         image,
+        //         x * this.tailleCarreau + (0.25 * this.tailleCarreau), 
+        //         y * this.tailleCarreau + (0.25 * this.tailleCarreau),
+        //         this.tailleCarreau /2,  
+        //         this.tailleCarreau /2
+        //     );
+        // };
     }
 
     initControl(document) {
@@ -67,10 +89,7 @@ class Vue {
         });
     }
 
-
     afficherPlateauJeu() {
-        //this.chargerImagesFantomes();
-
         // Efface le canvas
         this.ctx.fillStyle = 'white';
         this.ctx.clearRect(0, 0, this.myCanva.width, this.myCanva.height);
@@ -93,6 +112,9 @@ class Vue {
                     case ElementType.ENERGIE:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/5, 'red', 'red', 2)
                     break;
+                    case ElementType.FRUIT:
+                        this.afficherFruit(x,y);
+                    break;
                     default:
                         console.log("Erreur d'affichage de la grille de jeu.");
                 }
@@ -105,18 +127,13 @@ class Vue {
 
         // Affiche les fantômes 
         let image;
-
         for (let i = 0; i < this.imagesFantomes.length; i++) {
             if (this.plateauDeJeu.etatEnergie == true) {
                 image = this.imageEnergie;
-                console.log("fantome bleu")
             } else {
                 image = this.imagesFantomes[i];
-                console.log("fantome couleur")
             }
-           
             const fantome = this.plateauDeJeu.listeFantomes[i];
-
             if (image.complete) {
                 this.ctx.drawImage(
                     image,
@@ -131,10 +148,9 @@ class Vue {
         // Affiche Pacman
         if (this.imagePacman.complete) {
             const pacman = this.plateauDeJeu.pacman;
-
             this.ctx.save();
-            
             let angle = 0;
+
             switch (pacman.direction) {
                 case Directions.HAUT:
                     angle = -Math.PI / 2; 
@@ -158,13 +174,15 @@ class Vue {
             this.ctx.rotate(angle);
             this.ctx.drawImage(this.imagePacman, -this.tailleCarreau / 4, -this.tailleCarreau / 4, this.tailleCarreau / 2, this.tailleCarreau / 2);
             //this.ctx.drawImage(this.imagePacman, pacman.position[0] * this.tailleCarreau + (0.25 * this.tailleCarreau), pacman.position[1] * this.tailleCarreau + (0.25 * this.tailleCarreau), this.tailleCarreau / 2, this.tailleCarreau / 2);
-        
+    
             this.ctx.restore();
         }
-        
-        setTimeout(() => this.afficherPlateauJeu(), 200);
-    }
 
+        // Affiche les fruits aléatoirement 
+ 
+        setTimeout(() => this.afficherPlateauJeu(), 100);
+    }
+      
     drawCircle(ctx, x, y, rayon, fill, stroke, strokeWidth) {
         ctx.beginPath()
         ctx.arc(x, y, rayon, 0, 2 * Math.PI, false) 
@@ -179,6 +197,3 @@ class Vue {
         }
     }
 }
-
-
-

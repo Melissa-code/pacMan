@@ -3,6 +3,7 @@ ElementType = {
   VIDE: 1,
   POINT: 2,
   ENERGIE: 3,
+  FRUIT: 4
 };
 
 Directions = {
@@ -22,8 +23,9 @@ class PlateauJeu {
   pacman;
   vitesse;
   nbPastilles;
-  nbEnergies = 4;
-  etatEnergie = false;
+  nbEnergies;
+  etatEnergie ;
+  fruits; 
 
 
   constructor(grille, listeFantomes, pacman) {
@@ -33,6 +35,11 @@ class PlateauJeu {
     this.vitesse = 1000;
     this.finduJeu = false;
     this.nbPastilles = 0;
+    this.nbEnergies = 4;
+    this.etatEnergie = false;
+    this.fruits = []; 
+
+    this.ajouterFruitAleatoirement();
     
     setTimeout(() => this.avancer(), this.vitesse);
   }
@@ -83,13 +90,13 @@ class PlateauJeu {
         
       } else {
         this.finduJeu = true; 
-        alert("Game Over :( !");
+        //alert("Game Over :( !");
+        console.log("Partie terminée !");
   
         return;
       }
       
     } 
-
 
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
@@ -106,7 +113,8 @@ class PlateauJeu {
 
       if (this.rencontrerFantome() && !this.etatEnergie) {
         this.finduJeu = true; 
-        alert("Game Over :( !");
+        //alert("Game Over :( !");
+        console.log("Partie terminée !");
       } else {
         setTimeout(() => this.avancer(), this.vitesse);
       }
@@ -129,7 +137,7 @@ class PlateauJeu {
         newPosition[1] += 1;
       break;
       default:
-      //console.log("Action avancer inconnue");
+        //console.log("Action avancer inconnue");
     }
 
     return newPosition;
@@ -157,19 +165,18 @@ class PlateauJeu {
         }
       } 
 
-      // Mange l'énergie (score +50)
+      // Mange les énergies
       if (this.grille[x][y] == ElementType.ENERGIE) {
         this.grille[x][y] = ElementType.VIDE;
         this.pacman.score += 50;
         this.nbEnergies --;
-        //console.log(this.nbEnergies)
 
-        this.fantomesDeviennentBleus("bleu", 10000);
+        this.fantomesDeviennentBleus( 10000);
       } 
     }
   }
-
-  fantomesDeviennentBleus(nouvelleCouleurBleue, duree) {
+  
+  fantomesDeviennentBleus(duree) {
     console.log('Changement de couleur des fantômes en bleu');
     this.etatEnergie = true;
 
@@ -284,30 +291,30 @@ class PlateauJeu {
    * Fantôme rouge : suit Pacman avec le + court chemin
    */
   avancerFantomeRouge(fantome) {
+    if (this.etatEnergie) {
+      this.avancerFantomeOrange(fantome);
+      return;
+    }
+
     const [j1, i1] = fantome.position;
     const [j2, i2] = this.pacman.position;
     const chemin = this.determinePlusCourtChemin(i1, j1, i2, j2);
-    //console.log(i1+','+j1+'->'+i2+','+j2);
+
     // Calcul du prochain déplacement
     if (chemin.length > 1) {
       // element 1 est la prochaine étape
       const [nextI, nextJ] = chemin[1]; 
-      //console.log('phantom take:',nextI,nextJ);
-      //if (!this.detecterMur([nextI, nextJ])) {
-        fantome.position = [nextJ, nextI];
-      //}
+      fantome.position = [nextJ, nextI];
     }
   }
 
   // Pacman rencontre un fantôme
   rencontrerFantome() {
-    //console.log(this.listeFantomes)
     for (let fantome of this.listeFantomes) {
       if (
         this.pacman.position[0] === fantome.position[0]
         && this.pacman.position[1] === fantome.position[1]
       ) {
-        
         return true;  
       }
     }
@@ -315,14 +322,41 @@ class PlateauJeu {
     return false;
   }
 
-  // faire energie: après pacman ne doit pas etre collé au fantome 
-  // fantome ne doit pas suivre pacman
-  // ajouter bleu clair (de base) pour 3e fantome 
 
+  // trouver position fruit sans etre dans mur et pas  (cases vides(liste): une aléatoire)
+  // determiner la liste des cases vides de la grille
+  // si la liste n'est pas vide, choisir un element aleatoire et placer le fruit
+  // programmer le moment ou il faut appeler un ajouterFruit (tous les 10sec par ex)
+  //afficher game over à côté du score sans alert
 
-  // apparaitre les fruits 
+  ajouterFruitAleatoirement() {
+    //console.log(this.fruits)
+    const x = Math.floor(Math.random() * this.grille[0].length);  
+    const y = Math.floor(Math.random() * this.grille.length);   
+    //console.log(x, y)
+    this.grille[y][x] = ElementType.VIDE
+    while (this.grille[y][x] != ElementType.VIDE) {
+      const x = Math.floor(Math.random() * this.grille[0].length);  
+      const y = Math.floor(Math.random() * this.grille.length);   
+      //console.log(x, y)
+    }
+      const fruits = ["Pomme", "Orange", "Cerise", "Banane"];
+      const fruitNom = fruits[Math.floor(Math.random() * fruits.length)];
 
+    
+      const fruit = new Fruit(fruitNom, [x, y]);
+      this.grille[y][x] = ElementType.FRUIT; 
+      this.fruits.push(fruit);
+      //console.log("Fruit : ", fruit);
+  }
 
+  fruitPosition(x,y) {
+      for (let i=0; i<this.fruits.length; i++) {
+        if (this.fruits[i].position[0]==x && this.fruits[i].position[1]==y) {
+          return this.fruits[i];
+        }
+      }
+  }
 
 }
 
@@ -372,11 +406,11 @@ class Fruit {
   image;
   position;
 
-  constructor(nom, nbPoints, image, position) {
+  constructor(nom, position) {
     this.nom = nom;
-    this.nbPoints = nbPoints;
-    this.image = image;
     this.position = position;
+    this.nbPoints = nom === "Pomme" ? 100 : (nom === "Orange" ? 150 : (nom === "Cerise" ? 200 : 250));
+    this.image  = nom.toLowerCase() + ".svg";
   }
 }
 
