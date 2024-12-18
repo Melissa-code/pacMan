@@ -15,6 +15,8 @@ class Vue {
         this.chargerImagesFantomes();
         this.imagePacman = ''; 
         this.chargerImagePacman(); 
+        this.imagePacmanGauche = new Image();
+        this.imagePacmanGauche.src = 'assets/images/personnages/pacmanGauche.svg';
         this.fruitsImages = {};
         this.chargerImagesFruits();
 
@@ -146,10 +148,14 @@ class Vue {
         }
         
         // Affiche Pacman
-        if (this.imagePacman.complete) {
+        if (this.imagePacman.complete || this.imagePacmanGauche.complete) {
             const pacman = this.plateauDeJeu.pacman;
             this.ctx.save();
             let angle = 0;
+            let imageToDraw = this.imagePacman;
+            if (pacman.direction === Directions.GAUCHE) {
+                imageToDraw = this.imagePacmanGauche;
+            }
 
             switch (pacman.direction) {
                 case Directions.HAUT:
@@ -159,7 +165,7 @@ class Vue {
                     angle = Math.PI / 2;  
                     break;
                 case Directions.GAUCHE:
-                    angle = Math.PI;     
+                    angle = 0;     
                     break;
                 case Directions.DROITE:
                     angle = 0; 
@@ -172,7 +178,7 @@ class Vue {
             );
 
             this.ctx.rotate(angle);
-            this.ctx.drawImage(this.imagePacman, -this.tailleCarreau / 4, -this.tailleCarreau / 4, this.tailleCarreau / 2, this.tailleCarreau / 2);
+            this.ctx.drawImage(imageToDraw, -this.tailleCarreau / 4, -this.tailleCarreau / 4, this.tailleCarreau / 2, this.tailleCarreau / 2);
             this.ctx.restore();
         }
        

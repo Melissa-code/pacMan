@@ -90,5 +90,5 @@ _______________________________________________________
 
 - Create all the classes in the model 
 
-- Display the game in the vue 
+- Display the game in the view
 
