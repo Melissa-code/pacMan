@@ -40,6 +40,7 @@ class PlateauJeu {
     this.fruits = []; 
 
     this.ajouterFruitAleatoirement();
+   // this.démarrerAjouterFruits();
     
     setTimeout(() => this.avancer(), this.vitesse);
   }
@@ -103,7 +104,7 @@ class PlateauJeu {
            this.avancerCommeFantomeOrange(fantome);
         break;
         case "rouge":
-           this.avancerFantomeRouge(fantome);
+           this.avancerCommeFantomeRouge(fantome);
         break; 
         //case "rose":
         //case "bleu":
@@ -169,8 +170,17 @@ class PlateauJeu {
         this.pacman.score += 50;
         this.nbEnergies --;
 
-        this.fantomesDeviennentBleus( 10000);
+        this.fantomesDeviennentBleus(10000);
       } 
+
+      // Mange le fruit
+      if (this.grille[x][y] == ElementType.FRUIT) {
+        const fruit = this.fruits[0];
+        this.grille[x][y] = ElementType.VIDE;
+        this.pacman.score += fruit.nbPoints;
+        console.log("Score après mange un fruit :", this.pacman.score);
+        this.fruits.shift(); 
+      }
     }
   }
   
@@ -284,7 +294,7 @@ class PlateauJeu {
   /**
    * Fantôme rouge : suit Pacman avec le + court chemin
    */
-  avancerFantomeRouge(fantome) {
+  avancerCommeFantomeRouge(fantome) {
     if (this.etatEnergie) {
       this.avancerCommeFantomeOrange(fantome);
       return;
@@ -316,20 +326,24 @@ class PlateauJeu {
     return false;
   }
 
-
-  // trouver position fruit sans etre dans mur et pas  (cases vides(liste): une aléatoire)
   // determiner la liste des cases vides de la grille
   // si la liste n'est pas vide, choisir un element aleatoire et placer le fruit
   // programmer le moment ou il faut appeler un ajouterFruit (tous les 10sec par ex)
-  //afficher game over à côté du score sans alert
+  // afficher game over à côté du score sans alert
 
   ajouterFruitAleatoirement() {
     let x, y;
-    // fruit dans case vide
+    // fruit dans case point/energie/vide
     do {
         x = Math.floor(Math.random() * this.grille[0].length);  
         y = Math.floor(Math.random() * this.grille.length);   
-    } while (this.grille[y][x] !== ElementType.VIDE);  
+    } while (
+        this.grille[y][x] !== ElementType.POINT &&
+        this.grille[y][x] !== ElementType.ENERGIE &&
+        this.grille[y][x] !== ElementType.VIDE ||  
+        (this.pacman.position[0] === x && this.pacman.position[1] === y) || 
+        this.listeFantomes.some(fantome => fantome.position[0] === x && fantome.position[1] === y) 
+      );  
 
     const fruits = ["pomme", "orange", "cerise", "banane"];
     const fruitNom = fruits[Math.floor(Math.random() * fruits.length)];
@@ -338,14 +352,33 @@ class PlateauJeu {
     this.grille[y][x] = ElementType.FRUIT; 
     this.fruits.push(fruit);  
     //console.log("Fruit ajouté : ", fruit);
+
+    return fruit;
+
+    
+    // setTimeout(() => {
+    //   this.grille[y][x] = ElementType.VIDE; 
+    //   const index = this.fruits.indexOf(fruit);
+    //   if (index > -1) {
+    //       this.fruits.splice(index, 1); 
+    //   }
+    //   console.log("Fruit supprimé :", fruit);
+    // }, 10000);
   }
 
+  // démarrerAjouterFruits() {
+  //   setInterval(() => {
+  //     this.ajouterFruitAleatoirement();
+  //   }, 10000);
+  // }
+
+
   fruitPosition(x,y) {
-      for (let i=0; i<this.fruits.length; i++) {
-        if (this.fruits[i].position[0]==x && this.fruits[i].position[1]==y) {
-          return this.fruits[i];
-        }
+    for (let i = 0; i < this.fruits.length; i++) {
+      if (this.fruits[i].position[0] == x && this.fruits[i].position[1] == y) {
+        return this.fruits[i];
       }
+    }
   }
 
 }

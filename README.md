@@ -58,7 +58,7 @@ Manger un fantôme après une Super-pastille : Le premier fantôme donne 200 poi
 
 Des fruits apparaissent parfois au centre du labyrinthe. Lorsque Pac-Man les mange, il gagne des points supplémentaires.
 
-Les fruits bonus apparaissent à intervalles réguliers et donnent entre 100 et 5000 points selon le fruit.
+Les fruits bonus apparaissent à intervalles réguliers et donnent entre 100 et 250 points selon le fruit.
 
 
 ### Les tunnels/vides:
