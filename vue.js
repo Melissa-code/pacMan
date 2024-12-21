@@ -126,6 +126,13 @@ class Vue {
         this.ctx.font = '22px Orbitron';
         this.ctx.textAlign = 'center';
         this.ctx.fillText('Score: ' + this.plateauDeJeu.pacman.score, this.myCanva.width/2, this.tailleCarreau/2)
+        
+        // Affiche Game Over 
+        if (this.plateauDeJeu.finduJeu) {
+            this.ctx.fillStyle = 'red';
+            this.ctx.font = 'bold 22px Orbitron';
+            this.ctx.fillText('Game Over', this.myCanva.width / 2 + 130, this.tailleCarreau / 2);  // Décale le texte à droite du score
+        } 
 
         // Affiche les fantômes 
         let image;
