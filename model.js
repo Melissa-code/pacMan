@@ -40,7 +40,7 @@ class PlateauJeu {
     this.fruits = []; 
 
     this.ajouterFruitAleatoirement();
-   // this.démarrerAjouterFruits();
+    this.démarrerAjouterFruits();
     
     setTimeout(() => this.avancer(), this.vitesse);
   }
@@ -351,31 +351,38 @@ class PlateauJeu {
     const fruit = new Fruit(fruitNom, [x, y]);
     this.grille[y][x] = ElementType.FRUIT; 
     this.fruits.push(fruit);  
-    //console.log("Fruit ajouté : ", fruit);
+    //  console.log("Fruit: ", fruit);
+    // console.log('fruits dans la liste:' , this.fruits); 
+    
+    //let copieFruit = 
+    console.log('liste des fruits actuelle: ', this.fruits.map(f=>f.nom))
+    setTimeout(function(fruit_,y,x, listeFruits) {
+      //this.grille[y][x] = ElementType.VIDE; 
+      //this.fruits.unshift(); 
+      let index=listeFruits.indexOf(fruit_);
+      
+      if (index != -1) {
+        listeFruits.splice(index, 1);
+        console.log('supression de ', fruit_.nom);
+      }
+      
+      //console.log("Fruit supprimé :", fruit);
+    }, 10000, fruit, y, x, this.fruits);
 
     return fruit;
-
-    
-    // setTimeout(() => {
-    //   this.grille[y][x] = ElementType.VIDE; 
-    //   const index = this.fruits.indexOf(fruit);
-    //   if (index > -1) {
-    //       this.fruits.splice(index, 1); 
-    //   }
-    //   console.log("Fruit supprimé :", fruit);
-    // }, 10000);
   }
 
-  // démarrerAjouterFruits() {
-  //   setInterval(() => {
-  //     this.ajouterFruitAleatoirement();
-  //   }, 10000);
-  // }
+  démarrerAjouterFruits() {
+    setInterval(() => {
+      this.ajouterFruitAleatoirement();
+    }, 10000);
+  }
 
 
   fruitPosition(x,y) {
     for (let i = 0; i < this.fruits.length; i++) {
       if (this.fruits[i].position[0] == x && this.fruits[i].position[1] == y) {
+   
         return this.fruits[i];
       }
     }
@@ -442,7 +449,7 @@ class Fruit {
 /* ************************************************************** */
 
 class FabriqueFruit {
-  nomsFruits = ["Pomme", "Orange", "Cerise", "Banane"];
+   nomsFruits = ["pomme", "orange", "cerise", "banane"];
 
   // 0.99999999999999 => ]0,1[ * N => 0..N
   randomFruit() {

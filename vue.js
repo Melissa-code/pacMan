@@ -17,7 +17,9 @@ class Vue {
         this.chargerImagePacman(); 
         this.imagePacmanGauche = new Image();
         this.imagePacmanGauche.src = 'assets/images/personnages/pacmanGauche.svg';
-        this.fruitsImages = {};
+        this.fruitsImages = [];
+    
+        this.nomsFruits = ["pomme", "orange", "cerise", "banane"];
         this.chargerImagesFruits();
 
         this.afficherPlateauJeu();
@@ -25,12 +27,20 @@ class Vue {
     }
 
     chargerImagesFruits() {
-        for (const fruit of this.plateauDeJeu.fruits) {
+        //console.log('charger image de fruit')
+        let i = 0;
+
+        for (let fruit in this.nomsFruits) {
             const image = new Image();
-            // Charge l'image
+            // console.log("fruit.nom: ")
+            // console.log(this.nomsFruits[fruit])
+            // Charge l'image de tous les fruits
             image.addEventListener("load", () => {}, false);
-            image.src = 'assets/images/fruits/' + fruit.image;
-            this.fruitsImages[fruit.type] = image;
+            image.src = 'assets/images/fruits/' + this.nomsFruits[fruit] + ".svg";
+            //console.log("image.src: ", image.src);
+            this.fruitsImages[i++] = image;
+            //console.log("this.fruitsImages: ")
+            //console.log(this.fruitsImages)
         }
     }
 
@@ -61,15 +71,30 @@ class Vue {
 
     afficherFruit(x, y) {
         const fruit = this.plateauDeJeu.fruitPosition(x, y); 
-        if (fruit && this.fruitsImages[fruit.type]) {
-            const image = this.fruitsImages[fruit.type]; 
-            this.ctx.drawImage(
-                image,
-                x * this.tailleCarreau + (0.25 * this.tailleCarreau),
-                y * this.tailleCarreau + (0.25 * this.tailleCarreau),
-                this.tailleCarreau / 2,
-                this.tailleCarreau / 2
-            );
+
+        if (fruit) {
+            //console.log('fruit:')
+            //console.log(fruit)
+
+            let indexImage = this.nomsFruits.indexOf(fruit.nom);
+
+            if (indexImage != -1) {
+                //console.log("indexImage dans la condition: ")
+                // console.log(indexImage)
+                //console.log(this.fruitsImages)
+               
+                const image = this.fruitsImages[indexImage]; 
+                // console.log("image");
+                // console.log(image);
+
+                this.ctx.drawImage(
+                    image,
+                    x * this.tailleCarreau + (0.25 * this.tailleCarreau),
+                    y * this.tailleCarreau + (0.25 * this.tailleCarreau),
+                    this.tailleCarreau / 2,
+                    this.tailleCarreau / 2
+                );
+            }
         }
     }
     
@@ -96,7 +121,7 @@ class Vue {
         
         for (let y = 0; y < this.plateauDeJeu.grille.length; y++) {
             for (let x = 0; x < this.plateauDeJeu.grille[y].length; x++) {
-                // Affiche les éléments du plateau de jeu (mur, energie, vide, point))
+                // Affiche les éléments du plateau de jeu (mur, energie, vide, point)
                 switch (this.plateauDeJeu.grille[y][x]) {
                     case ElementType.MUR:
                         this.ctx.fillStyle = 'yellow';
