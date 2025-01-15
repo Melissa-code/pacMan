@@ -4,7 +4,10 @@ Pac-Man est un jeu d'arcade sorti en 1980.
 
 C'est un jeu de stratégie et de réflexion dans lequel le joueur doit jongler entre l'évitement des fantômes et la collecte de toutes les pastilles pour progresser dans les niveaux.
 
-Joue au jeu : [New Pac-Man Game](https://new-pacman-game.netlify.app/)
+Joue au jeu : [New Pacman Game](https://new-pacman-game.netlify.app/)
+
+
+![Pac-Man](./assets/pacman.png)
 
 
 ## But du jeu 
@@ -16,6 +19,7 @@ Le joueur passe au niveau supérieur lorsque toutes les pastilles d'un niveau so
 
 
 ## Éléments du jeu
+
 
 ### Pac-Man: 
 
@@ -70,9 +74,9 @@ Il y a des tunnels de téléportation aux extrémités du labyrinthe. Si Pac-Man
 _______________________________________________________
 
 
-Design pattern : MVC (model, vue, index)
+Design pattern : MVC (model, view, index)
 
-- Create all the classes in the modele
+- Create all the classes in the model
 
-- Display the game in the vue
+- Display the game in the view
 
