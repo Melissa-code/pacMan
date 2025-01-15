@@ -66,6 +66,39 @@ class PlateauJeu {
     return false;
   }
 
+  avancerCommeFantomeRose(fantome) {
+    if (this.etatEnergie) {
+      this.avancerCommeFantomeOrange(fantome);
+      return;
+    }
+  
+    const [j1, i1] = fantome.position;
+    const [j2, i2] = this.pacman.position;
+    const chemin = this.determinePlusCourtChemin(i1, j1, i2, j2);
+  
+    // Calcule le prochain déplacement (au moins une case sinon pacman)
+    if (chemin.length > 1) {
+      const [nextI, nextJ] = chemin[1];
+      fantome.position = [nextJ, nextI];
+    }
+  }
+
+  alternerComportementFantomesRougeOrange(fantome) {
+    setTimeout(() => {
+        if (fantome.couleur === "bleuClair") {
+            if (fantome.comportementActuel === "rouge") {
+                this.avancerCommeFantomeOrange(fantome);  
+                fantome.comportementActuel = "orange";
+            } else {
+                this.avancerCommeFantomeRouge(fantome); 
+                fantome.comportementActuel = "rouge";
+            }
+            // récursivité pour alternance continue 
+            this.alternerComportementFantomesRougeOrange(fantome);
+        }
+    }, 1000);  
+  }
+
   avancer() {
     if (this.finduJeu) {
       console.log("Partie terminée !");
@@ -77,16 +110,13 @@ class PlateauJeu {
     if (this.rencontrerFantome()) {
       if (this.etatEnergie == true) {
         this.pacman.score += 200;
-        console.log(this.etatEnergie)
-        console.log(this.pacman.score)
-        
+        console.log("Score : ", this.pacman.score)
       } else {
         this.finduJeu = true; 
         console.log("Partie terminée !");
   
         return;
       }
-      
     } 
 
     for (let fantome of this.listeFantomes)
@@ -97,9 +127,15 @@ class PlateauJeu {
         case "rouge":
            this.avancerCommeFantomeRouge(fantome);
         break; 
-        //case "rose":
-        //case "bleu":
-        //break;
+        case "rose":
+          this.avancerCommeFantomeRose(fantome);
+         break; 
+        case "bleuClair":
+        if (!fantome.comportementActuel) {
+            fantome.comportementActuel = "rouge"; 
+            this.alternerComportementFantomesRougeOrange(fantome); 
+        }
+        break;
       }
 
       if (this.rencontrerFantome() && !this.etatEnergie) {
@@ -150,7 +186,7 @@ class PlateauJeu {
 
       let [y, x] = this.pacman.position;
 
-      // Mange les points
+      // Mange les points/pastilles 
       if (this.grille[x][y] == ElementType.POINT) {
         this.grille[x][y] = ElementType.VIDE;
         this.pacman.score ++;
@@ -173,12 +209,9 @@ class PlateauJeu {
 
       // Mange le fruit
       let fruit = this.fruitPosition(y, x);
-      if (fruit) {
-          // Fruit mangé  
+      if (fruit) { 
           this.pacman.score += fruit.nbPoints;   
           console.log("Fruit mangé, score actuel :", this.pacman.score);
-          // console.log(y, x)
-          // console.log(fruit)
           this.grille[y][x] = ElementType.VIDE; 
           // Retire le fruit de fruits[] via l'index
           const index = this.fruits.indexOf(fruit);  
@@ -372,16 +405,11 @@ class PlateauJeu {
 
   fruitPosition(x, y) {
     for (let i = 0; i < this.fruits.length; i++) {
-      let fruit = this.fruits[i];
-        console.log(`Comparaison avec fruit à la position ${fruit.position}:`);
-
       if (this.fruits[i].position[0] == x && this.fruits[i].position[1] == y) {
-        console.log("Fruit trouvé à la position :", fruit);
-
         return this.fruits[i];
       }
     }
-    console.log("Aucun fruit trouvé à cette position");
+    //console.log("Aucun fruit trouvé à cette position");
     return null; 
   }
 

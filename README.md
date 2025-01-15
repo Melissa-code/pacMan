@@ -29,9 +29,9 @@ Quatre fantômes colorés poursuivent Pac-Man. Si un fantôme touche Pac-Man, ce
 
 - Pinky (rose): il essaie de prendre Pac-Man en embuscade.
 
-- Inky (bleu): son comportement dépend de la position de Pac-Man et de Blinky.
+- Inky (bleu): son comportement alterne entre celui de Blinky et celui de Pinky. 
 
-- Clyde (orange): il se comporte de manière imprévisible, alternant entre la poursuite et l'éloignement de Pac-Man.
+- Clyde (orange): il se comporte comme le fantôme rouge Blinky et imite Pinky quand Pacman mange une énergie. 
 
 
 ### Les pastilles/points:
@@ -66,29 +66,12 @@ Les fruits bonus apparaissent à intervalles réguliers et donnent entre 100 et 
 Il y a des tunnels de téléportation aux extrémités du labyrinthe. Si Pac-Man (ou un fantôme) entre dans un tunnel, il ressort de l'autre côté du labyrinthe.
 
 
-
-## Vies: 
-
-- Pac-Man commence avec trois vies, et une vie supplémentaire est souvent accordée lorsque le joueur atteint 10 000 points.
-
-- Si un fantôme touche Pac-Man, il perd une vie.
-
-- Le jeu se termine lorsque toutes les vies de Pac-Man sont perdues.
-
-
-
-## Niveaux: 
-
-Chaque labyrinthe est plus ou moins le même, mais la difficulté augmente à chaque niveau. 
-
-- Les fantômes deviennent plus rapides, 
-- et le temps pendant lequel ils restent vulnérables après avoir mangé une Super-pastille diminue à chaque niveau.
-
-
 _______________________________________________________
 
 
-- Create all the classes in the model 
+Design pattern : MVC (model, vue, index)
 
-- Display the game in the view
+- Create all the classes in the modele
+
+- Display the game in the vue
 
