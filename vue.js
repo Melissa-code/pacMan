@@ -18,8 +18,7 @@ class Vue {
         this.imagePacmanGauche = new Image();
         this.imagePacmanGauche.src = 'assets/images/personnages/pacmanGauche.svg';
         this.fruitsImages = [];
-    
-        this.nomsFruits = ["pomme", "orange", "cerise", "banane"];
+        this.fruitsDisponibles = FabriqueFruit.nomsFruits;
         this.chargerImagesFruits();
 
         this.afficherPlateauJeu();
@@ -27,20 +26,12 @@ class Vue {
     }
 
     chargerImagesFruits() {
-        //console.log('charger image de fruit')
         let i = 0;
-
-        for (let fruit in this.nomsFruits) {
+        for (let fruit in this.fruitsDisponibles) {
             const image = new Image();
-            // console.log("fruit.nom: ")
-            // console.log(this.nomsFruits[fruit])
-            // Charge l'image de tous les fruits
             image.addEventListener("load", () => {}, false);
-            image.src = 'assets/images/fruits/' + this.nomsFruits[fruit] + ".svg";
-            //console.log("image.src: ", image.src);
+            image.src = 'assets/images/fruits/' + this.fruitsDisponibles[fruit] + ".svg";
             this.fruitsImages[i++] = image;
-            //console.log("this.fruitsImages: ")
-            //console.log(this.fruitsImages)
         }
     }
 
@@ -69,24 +60,16 @@ class Vue {
         this.imagePacman = image;
     }
 
-    afficherFruit(x, y) {
-        const fruit = this.plateauDeJeu.fruitPosition(x, y); 
-
-        if (fruit) {
-            //console.log('fruit:')
-            //console.log(fruit)
-
-            let indexImage = this.nomsFruits.indexOf(fruit.nom);
+    afficherFruit() {
+        const fruits = this.plateauDeJeu.fruits; 
+        for (let i in fruits) {
+            let fruit = fruits[i];
+            let indexImage = this.fruitsDisponibles.indexOf(fruit.nom);
+            let x = fruit.position[0];
+            let y = fruit.position[1];
 
             if (indexImage != -1) {
-                //console.log("indexImage dans la condition: ")
-                // console.log(indexImage)
-                //console.log(this.fruitsImages)
-               
                 const image = this.fruitsImages[indexImage]; 
-                // console.log("image");
-                // console.log(image);
-
                 this.ctx.drawImage(
                     image,
                     x * this.tailleCarreau + (0.25 * this.tailleCarreau),
@@ -126,25 +109,26 @@ class Vue {
                     case ElementType.MUR:
                         this.ctx.fillStyle = 'yellow';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
-                        break;
+                    break;
                     case ElementType.VIDE:
                         this.ctx.fillStyle = 'black';
                         this.ctx.fillRect(x * this.tailleCarreau, y * this.tailleCarreau, this.tailleCarreau, this.tailleCarreau);
-                        break;
+                    break;
                     case ElementType.POINT:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/10, 'pink', 'pink', 2)
-                        break;
+                    break;
                     case ElementType.ENERGIE:
                         this.drawCircle(this.ctx, x * this.tailleCarreau + 0.5 * this.tailleCarreau, y * this.tailleCarreau  + 0.5 * this.tailleCarreau, this.tailleCarreau/5, 'red', 'red', 2)
                     break;
                     case ElementType.FRUIT:
-                        this.afficherFruit(x,y);
                     break;
                     default:
                         console.log("Erreur d'affichage de la grille de jeu.");
                 }
             }
         }
+
+        this.afficherFruit();
 
         // Affiche score
         this.ctx.fillStyle = 'black';
@@ -156,7 +140,7 @@ class Vue {
         if (this.plateauDeJeu.finduJeu) {
             this.ctx.fillStyle = 'red';
             this.ctx.font = 'bold 22px Orbitron';
-            this.ctx.fillText('Game Over', this.myCanva.width / 2 + 130, this.tailleCarreau / 2);  // Décale le texte à droite du score
+            this.ctx.fillText('Game Over', this.myCanva.width / 2 + 200, this.tailleCarreau / 2);  // Décale le texte à droite du score
         } 
 
         // Affiche les fantômes 

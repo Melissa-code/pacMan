@@ -18,15 +18,6 @@ Directions = {
 /* ************************************************************** */
 
 class PlateauJeu {
-  grille;
-  listeFantomes;
-  pacman;
-  vitesse;
-  nbPastilles;
-  nbEnergies;
-  etatEnergie ;
-  fruits; 
-
 
   constructor(grille, listeFantomes, pacman) {
     this.grille = grille;
@@ -40,7 +31,7 @@ class PlateauJeu {
     this.fruits = []; 
 
     this.ajouterFruitAleatoirement();
-    this.démarrerAjouterFruits();
+    this.demarrerAjouterFruits();
     
     setTimeout(() => this.avancer(), this.vitesse);
   }
@@ -66,7 +57,7 @@ class PlateauJeu {
 
   detecterMur(position) {
     if (position[0] < 0 || position[1] < 0) return true;
-    if (position[0] > this.grille[0].length || position[1] > this.grille.length)
+    if (position[0] >= this.grille[0].length || position[1] >= this.grille.length)
       return true;
 
     const casePacman = this.grille[position[1]][position[0]];
@@ -124,10 +115,16 @@ class PlateauJeu {
 
     switch (currentDirection) {
       case Directions.GAUCHE:
-        newPosition[0] -= 1;
+        if (newPosition[0]==0)
+        {newPosition[0]   = this.grille[0].length-1;
+          console.log('bordure troue');
+        }
+        else newPosition[0] -= 1;
       break;
       case Directions.DROITE:
-        newPosition[0] += 1;
+        if (newPosition[0] == this.grille[0].length -1)
+        {newPosition[0] = 0}
+        else newPosition[0] += 1;
       break;
       case Directions.HAUT:
         newPosition[1] -= 1;
@@ -141,6 +138,7 @@ class PlateauJeu {
 
     return newPosition;
   }
+
 
   avancerPacman() {
     let nouvellePositionPacman = this.nextPosition (
@@ -174,13 +172,23 @@ class PlateauJeu {
       } 
 
       // Mange le fruit
-      if (this.grille[x][y] == ElementType.FRUIT) {
-        const fruit = this.fruits[0];
-        this.grille[x][y] = ElementType.VIDE;
-        this.pacman.score += fruit.nbPoints;
-        console.log("Score après mange un fruit :", this.pacman.score);
-        this.fruits.shift(); 
-      }
+      let fruit = this.fruitPosition(y, x);
+      if (fruit) {
+          // Fruit mangé  
+          this.pacman.score += fruit.nbPoints;   
+          console.log("Fruit mangé, score actuel :", this.pacman.score);
+          // console.log(y, x)
+          // console.log(fruit)
+          this.grille[y][x] = ElementType.VIDE; 
+          // Retire le fruit de fruits[] via l'index
+          const index = this.fruits.indexOf(fruit);  
+          if (index !== -1) {
+              this.fruits.splice(index, 1);  
+          }
+      }     
+
+    } else {
+      console.log('Attention au mur!');
     }
   }
   
@@ -326,11 +334,6 @@ class PlateauJeu {
     return false;
   }
 
-  // determiner la liste des cases vides de la grille
-  // si la liste n'est pas vide, choisir un element aleatoire et placer le fruit
-  // programmer le moment ou il faut appeler un ajouterFruit (tous les 10sec par ex)
-  // afficher game over à côté du score sans alert
-
   ajouterFruitAleatoirement() {
     let x, y;
     // fruit dans case point/energie/vide
@@ -349,43 +352,37 @@ class PlateauJeu {
     const fruitNom = fruits[Math.floor(Math.random() * fruits.length)];
   
     const fruit = new Fruit(fruitNom, [x, y]);
-    this.grille[y][x] = ElementType.FRUIT; 
     this.fruits.push(fruit);  
-    //  console.log("Fruit: ", fruit);
-    // console.log('fruits dans la liste:' , this.fruits); 
-    
-    //let copieFruit = 
-    console.log('liste des fruits actuelle: ', this.fruits.map(f=>f.nom))
+   
     setTimeout(function(fruit_,y,x, listeFruits) {
-      //this.grille[y][x] = ElementType.VIDE; 
-      //this.fruits.unshift(); 
       let index=listeFruits.indexOf(fruit_);
-      
       if (index != -1) {
         listeFruits.splice(index, 1);
-        console.log('supression de ', fruit_.nom);
       }
-      
-      //console.log("Fruit supprimé :", fruit);
     }, 10000, fruit, y, x, this.fruits);
 
     return fruit;
   }
 
-  démarrerAjouterFruits() {
+  demarrerAjouterFruits() {
     setInterval(() => {
       this.ajouterFruitAleatoirement();
     }, 10000);
   }
 
-
-  fruitPosition(x,y) {
+  fruitPosition(x, y) {
     for (let i = 0; i < this.fruits.length; i++) {
+      let fruit = this.fruits[i];
+        console.log(`Comparaison avec fruit à la position ${fruit.position}:`);
+
       if (this.fruits[i].position[0] == x && this.fruits[i].position[1] == y) {
-   
+        console.log("Fruit trouvé à la position :", fruit);
+
         return this.fruits[i];
       }
     }
+    console.log("Aucun fruit trouvé à cette position");
+    return null; 
   }
 
 }
@@ -449,7 +446,7 @@ class Fruit {
 /* ************************************************************** */
 
 class FabriqueFruit {
-   nomsFruits = ["pomme", "orange", "cerise", "banane"];
+  static nomsFruits = ["pomme", "orange", "cerise", "banane"];
 
   // 0.99999999999999 => ]0,1[ * N => 0..N
   randomFruit() {

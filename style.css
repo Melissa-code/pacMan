@@ -21,8 +21,8 @@ h1 {
     color: yellow;
     text-shadow: 3px 3px 0px red, 6px 6px 0px blue;
     text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
 }
 
 #game {
