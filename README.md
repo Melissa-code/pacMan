@@ -4,6 +4,7 @@ Pac-Man est un jeu d'arcade sorti en 1980.
 
 C'est un jeu de stratégie et de réflexion dans lequel le joueur doit jongler entre l'évitement des fantômes et la collecte de toutes les pastilles pour progresser dans les niveaux.
 
+Joue au jeu : [New Pac-Man Game](https://new-pacman-game.netlify.app/)
 
 
 ## But du jeu 
