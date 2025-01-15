@@ -7,7 +7,7 @@ C'est un jeu de stratégie et de réflexion dans lequel le joueur doit jongler e
 Joue au jeu : [New Pacman Game](https://new-pacman-game.netlify.app/)
 
 
-![Pac-Man](./assets/pacman.png)
+<img src="./assets/pacman.png" alt="Pac-Man" width="300"/>
 
 
 ## But du jeu 
