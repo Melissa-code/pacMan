@@ -136,12 +136,18 @@ class Vue {
         this.ctx.textAlign = 'center';
         this.ctx.fillText('Score: ' + this.plateauDeJeu.pacman.score, this.myCanva.width/2, this.tailleCarreau/2)
         
-        // Affiche Game Over 
+        // Affiche Game Over/C'est gagné 
         if (this.plateauDeJeu.finduJeu) {
-            this.ctx.fillStyle = 'red';
-            this.ctx.font = 'bold 22px Orbitron';
-            this.ctx.fillText('Game Over', this.myCanva.width / 2 + 200, this.tailleCarreau / 2);  // Décale le texte à droite du score
-        } 
+            if (this.plateauDeJeu.nbPastilles == 0 && this.plateauDeJeu.nbEnergies == 0) {  
+                this.ctx.fillStyle = 'green';  
+                this.ctx.font = 'bold 22px Orbitron';
+                this.ctx.fillText('C\'est gagné!', this.myCanva.width / 2 + 200, this.tailleCarreau / 2);  
+            } else {
+                this.ctx.fillStyle = 'red'; 
+                this.ctx.font = 'bold 22px Orbitron';
+                this.ctx.fillText('Game Over', this.myCanva.width / 2 + 200, this.tailleCarreau / 2); 
+            }
+        }
 
         // Affiche les fantômes 
         let image;

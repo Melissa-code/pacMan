@@ -84,6 +84,8 @@ class PlateauJeu {
   }
 
   alternerComportementFantomesRougeOrange(fantome) {
+    if (this.finduJeu) return;
+
     setTimeout(() => {
         if (fantome.couleur === "bleuClair") {
             if (fantome.comportementActuel === "rouge") {
@@ -113,7 +115,7 @@ class PlateauJeu {
         console.log("Score : ", this.pacman.score)
       } else {
         this.finduJeu = true; 
-        console.log("Partie terminée !");
+        console.log("Partie terminée ! :(");
   
         return;
       }
@@ -129,7 +131,7 @@ class PlateauJeu {
         break; 
         case "rose":
           this.avancerCommeFantomeRose(fantome);
-         break; 
+        break; 
         case "bleuClair":
         if (!fantome.comportementActuel) {
             fantome.comportementActuel = "rouge"; 
@@ -140,7 +142,7 @@ class PlateauJeu {
 
       if (this.rencontrerFantome() && !this.etatEnergie) {
         this.finduJeu = true; 
-        console.log("Partie terminée !");
+        console.log("Partie terminée ! :(");
       } else {
         setTimeout(() => this.avancer(), this.vitesse);
       }
@@ -151,9 +153,9 @@ class PlateauJeu {
 
     switch (currentDirection) {
       case Directions.GAUCHE:
-        if (newPosition[0]==0)
-        {newPosition[0]   = this.grille[0].length-1;
-          console.log('bordure troue');
+        if (newPosition[0] == 0)
+        {newPosition[0] = this.grille[0].length-1;
+          //console.log('bordure');
         }
         else newPosition[0] -= 1;
       break;
@@ -174,7 +176,6 @@ class PlateauJeu {
 
     return newPosition;
   }
-
 
   avancerPacman() {
     let nouvellePositionPacman = this.nextPosition (
@@ -211,7 +212,7 @@ class PlateauJeu {
       let fruit = this.fruitPosition(y, x);
       if (fruit) { 
           this.pacman.score += fruit.nbPoints;   
-          console.log("Fruit mangé, score actuel :", this.pacman.score);
+          console.log("Fruit mangé, score : ", this.pacman.score);
           this.grille[y][x] = ElementType.VIDE; 
           // Retire le fruit de fruits[] via l'index
           const index = this.fruits.indexOf(fruit);  
