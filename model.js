@@ -23,7 +23,7 @@ class PlateauJeu {
     this.grille = grille;
     this.listeFantomes = listeFantomes;
     this.pacman = pacman;
-    this.vitesse = 1000;
+    this.vitesse = 500;
     this.finduJeu = false;
     this.nbPastilles = 0;
     this.nbEnergies = 4;
@@ -51,7 +51,7 @@ class PlateauJeu {
         this.pacman.direction = Directions.BAS;
         break;
       default:
-        console.log("Action inconnue:" + direction);
+        console.log("Action inconnue: " + direction);
     }
   }
 
