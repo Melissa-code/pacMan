@@ -112,7 +112,6 @@ class PlateauJeu {
     if (this.rencontrerFantome()) {
       if (this.etatEnergie == true) {
         this.pacman.score += 200;
-        console.log("Score : ", this.pacman.score)
       } else {
         this.finduJeu = true; 
         console.log("Partie terminée ! :(");
@@ -124,18 +123,18 @@ class PlateauJeu {
     for (let fantome of this.listeFantomes)
       switch (fantome.couleur) {
         case "orange":
-           //this.avancerCommeFantomeOrange(fantome);
+          this.avancerCommeFantomeOrange(fantome);
         break;
         case "rouge":
-           //this.avancerCommeFantomeRouge(fantome);
+          this.avancerCommeFantomeRouge(fantome);
         break; 
         case "rose":
-          //this.avancerCommeFantomeRose(fantome);
+          this.avancerCommeFantomeRose(fantome);
         break; 
         case "bleuClair":
         if (!fantome.comportementActuel) {
             fantome.comportementActuel = "rouge"; 
-            //this.alternerComportementFantomesRougeOrange(fantome); 
+            this.alternerComportementFantomesRougeOrange(fantome); 
         }
         break;
       }
@@ -193,8 +192,6 @@ class PlateauJeu {
         this.pacman.score ++;
         this.nbPastilles --;
 
-        console.log("nbPastilles ", this.nbPastilles)
-        console.log("nbEnergies ", this.nbEnergies)
         if (this.nbPastilles == 0 && this.nbEnergies == 0) {
           console.log("Bravo vous avez gagné :)!");
           this.finduJeu = true; 
@@ -213,24 +210,19 @@ class PlateauJeu {
       // Mange le fruit
       let fruit = this.fruitPosition(y, x);
       if (fruit) { 
-          console.error(`Aucun fruit trouvé à la position (${y}, ${x})`);
           this.pacman.score += fruit.nbPoints;   
-          console.log("Fruit mangé, score : ", this.pacman.score);
-          console.log(`Position de Pacman: x=${x}, y=${y}`);
-          console.log(`Grille actuelle: `, this.grille);
-          console.log("grille: ",  this.grille[y][x]); 
-          this.grille[y][x] = ElementType.VIDE; 
+          this.grille[x][y] = ElementType.VIDE; 
           // Retire le fruit de fruits[] via l'index
           const index = this.fruits.indexOf(fruit);  
           if (index !== -1) {
               this.fruits.splice(index, 1);  
           } else {
-            console.error(`Erreur : this.grille[${y}][${x}] est undefined`);
+            console.error(`Erreur : this.grille[${x}][${y}] est undefined`);
         }
       }     
 
     } else {
-      console.log('Attention au mur!');
+      //console.log('Attention au mur!');
     }
   }
   

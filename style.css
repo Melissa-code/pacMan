@@ -17,12 +17,11 @@ body {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 30px;
     color: yellow;
     text-shadow: 3px 3px 0px red, 6px 6px 0px blue;
     text-align: center;
-    margin-top: 3rem;
-    margin-bottom: 5rem;
+    margin: 1rem 0;
 }
 
 #game {
