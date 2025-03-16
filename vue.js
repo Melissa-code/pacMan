@@ -1,3 +1,7 @@
+import FabriqueFruit from './models/FabriqueFruit.js';
+import ElementType from './models/ElementType.js';
+import Directions from './models/Directions.js';
+
 class Vue {
 
     constructor(plateauDeJeu, document, tailleCarreau) {
@@ -221,3 +225,5 @@ class Vue {
         }
     }
 }
+
+export default Vue; 
