@@ -1,88 +1,131 @@
 # Pac-Man
 
-Pac-Man est un jeu d'arcade sorti en 1980. 
+Pac-Man est un jeu d'arcade sorti en 1980. Dans ce jeu, le joueur doit éviter les fantômes tout en collectant toutes les pastilles pour progresser à travers les niveaux.
 
-C'est un jeu de stratégie et de réflexion dans lequel le joueur doit jongler entre l'évitement des fantômes et la collecte de toutes les pastilles pour progresser dans les niveaux.
+Ce jeu est codé en JavaScript et est déployé sur Netlify: **[🔗 jouer à Pac-Man en ligne](https://new-pacman-game.netlify.app/)**
+ 
+⚠️ **Ce jeu est optimisé pour ordinateur** et nécessite l'utilisation des flèches du clavier. Il n'est pas compatible avec les appareils mobiles ou tablettes.
 
-Joue au jeu : [New Pacman Game](https://new-pacman-game.netlify.app/)
-
+---
 
 ## Aperçu 
 
-<div style="display: flex; gap: 2rem;">
+<div style="display: flex; gap: 3rem;">
   <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto;" />
   <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto;" />
 </div>
 
 ---- 
 
-## But du jeu 
+## 1. But du jeu 
 
-Le but du jeu de Pac-Man est de manger toutes les pastilles dans le labyrinthe tout en évitant les fantômes. 
-
-Le joueur passe au niveau supérieur lorsque toutes les pastilles d'un niveau sont mangées. 
+Le but du jeu est de manger toutes les pastilles dans le labyrinthe tout en évitant les fantômes. 
 
 
+## 2. Éléments du jeu
 
-## Éléments du jeu
+### 2.1 Pac-Man: 
 
+Le joueur contrôle Pac-Man qui peut se déplacer dans 4 directions (haut, bas, gauche, droite) pour manger des pastilles dans le labyrinthe.
 
-### Pac-Man: 
+### 2.2. Les fantômes: 
 
-Le joueur peut se déplacer dans quatre directions (haut, bas, gauche, droite) pour manger des pastilles dans le labyrinthe.
+Quatre fantômes colorés poursuivent Pac-Man. Si un fantôme touche Pac-Man, ce dernier perd. 
 
+1. Blinky (rouge): il suit directement Pac-Man cherchant à le rattraper à tout prix. Ce fantôme est le plus agressif du jeu.
 
-### Les fantômes: 
+2. Clyde (orange): il avance de manière aléatoire, changeant de direction chaque fois qu'il rencontre un obstacle ou lorsqu'il décide de changer de trajectoire. 
 
-Quatre fantômes colorés poursuivent Pac-Man. Si un fantôme touche Pac-Man, ce dernier perd une vie.
+3. Pinky (rose): Pinky agit presque comme Blinky. Il se superpose à Blinky parfois. 
 
-- Blinky (rouge): c'est le plus agressif. Il suit directement Pac-Man.
-
-- Pinky (rose): il essaie de prendre Pac-Man en embuscade.
-
-- Inky (bleu): son comportement alterne entre celui de Blinky et celui de Pinky. 
-
-- Clyde (orange): il se comporte comme le fantôme rouge Blinky et imite Pinky quand Pacman mange une énergie. 
+4. Inky (bleu clair): il alterne entre le comportement de Blinky et celui de Clyde, ce qui le rend particulièrement difficile à prévoir. 
 
 
-### Les pastilles/points:
+### 2.3. Les pastilles/points:
 
-De petites pastilles/points sont réparties dans tout le labyrinthe. Pac-Man doit toutes les manger pour passer au niveau supérieur.
+De petites pastilles/points sont réparties dans le labyrinthe. Pac-Man doit toutes les manger pour gagner.
 
 Chaque pastille mangée rapporte 10 points.
 
 
-### Les super-pastilles/énergies:
+### 2.4. Les super-pastilles/énergies:
 
 Il y en a 4 dans chaque niveau. Elles sont situées dans les coins du labyrinthe. 
 
-- Lorsque Pac-Man en mange une, les fantômes deviennent bleus pendant un temps limité ce qui permet à Pac-Man de les manger. 
+Lorsque Pac-Man en mange une, les fantômes deviennent bleus pendant un temps limité ce qui permet à Pac-Man de les manger. 
 
 Elles rapportent 50 points.
 
-- Manger un fantôme donne des points bonus, mais après un certain temps, les fantômes reviennent à la normale et recommencent à poursuivre Pac-Man.
-
-Manger un fantôme après une Super-pastille : Le premier fantôme donne 200 points, le deuxième 400 points, le troisième 800 points, et le quatrième 1600 points.
+Manger un fantôme donne des points bonus, mais après un certain temps, les fantômes reviennent à la normale et recommencent à poursuivre Pac-Man.
 
 
-### Les fruits: 
+### 2.5. Les fruits: 
 
-Des fruits apparaissent parfois au centre du labyrinthe. Lorsque Pac-Man les mange, il gagne des points supplémentaires.
+Des fruits apparaissent dans le labyrinthe. Lorsque Pac-Man les mange, il gagne des points supplémentaires.
 
 Les fruits bonus apparaissent à intervalles réguliers et donnent entre 100 et 250 points selon le fruit.
 
 
-### Les tunnels/vides:
+### 2.6. Les tunnels/vides:
 
-Il y a des tunnels de téléportation aux extrémités du labyrinthe. Si Pac-Man (ou un fantôme) entre dans un tunnel, il ressort de l'autre côté du labyrinthe.
+Il y a des tunnels de téléportation aux extrémités du labyrinthe. Si Pac-Man entre dans un tunnel, il ressort de l'autre côté du labyrinthe.
+
+---
+
+## 3. Installation 
+
+```
+  git clone https://github.com/Melissa-code/pacMan.git
+  cd pacMan
+  Ouvrir le fichier `index.html` dans le navigateur pour commencer à jouer
+```
+
+---
+
+## 4. Technologies : 
+
+- **HTML** : Structure du jeu
+- **CSS** : Design et mise en page
+- **JavaScript** : Logique du jeu 
+- **Canvas API** : Rendu du jeu
+
+--- 
+
+## 5. Architecture et patterns : 
+
+### 5.1. Architecture 
+
+Structure du projet:
+
+📂 pacMan
+┣ 📜 index.html → Structure du jeu
+┣ 📜 style.css → Styles et mise en page
+┣ 📂 models → Contient les classes du jeu
+│ ┣ 📜 Fantome.js → Représente un fantôme
+│ ┣ 📜 PacMan.js → Représente Pac-Man
+│ ┣ 📜 Fruit.js → Représente un fruit
+│ ┣ 📜 FabriqueFruit.js → Gère la création des fruits
+│ ┣ 📜 PlateauJeu.js → Gère le plateau de jeu
+│ ┗ 📜 Directions.js → Enum des directions
+│ ┗ 📜 ElementType.js → Enum des éléments (mur, vide, point, energie, fruit)
+┣ 📜 Vue.js → Gère l'affichage du jeu et les interactions utilisateur
+┗ 📜 controller.js → Point d’entrée, initialise le jeu et la logique principale
+┗ 📜 images → Contient les images du jeu
 
 
-_______________________________________________________
+### 5.2. Patterns utilisés
+
+- **MVC (Model-View-Controller)**  
+  - `models/` contient la logique du jeu (Modèle).  
+  - `Vue.js` s’occupe de l'affichage (Vue).  
+  - `controller.js` fait le lien entre les modèles et la vue (Contrôleur)
+
+- **Factory Pattern**  
+  - `FabriqueFruit.js` est une **fabrique** qui crée les différents fruits du jeu.  
+
+---
 
 
-Design pattern : MVC (model, view, index)
+## 6. Author 
 
-- Create all the classes in the model
-
-- Display the game in the view
-
+- Melissa-code
