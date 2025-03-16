@@ -32,7 +32,20 @@ const fantomes = [rougeFantome, bleuFantome, orangeFantome, roseFantome];
 // PacMan (position, direction = null, invincible, score)
 const pacman = new PacMan([9, 9], null, false); 
 
-const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes, pacman);
-const vue = new Vue(plateauDeJeu, document, 43);
+// Impossible to play with a mobile phone
+function isMobile() {
+  return window.innerWidth <= 768; 
+}
 
+if (isMobile()) {
+  const gameContainer = document.getElementById('game');
+  gameContainer.style.marginTop = '4rem'; 
+  gameContainer.style.marginLeft = '10px'; 
+  gameContainer.style.marginRight = '10px';
+  gameContainer.innerHTML = 
+  '<p style="font-size: 20px; text-align: center;">Ce jeu n\'est pas compatible avec les appareils mobiles.</p>';
+} else {
+  const plateauDeJeu = new PlateauJeu(planDeJeu, fantomes, pacman);
+  const vue = new Vue(plateauDeJeu, document, 43);
+}
 
