@@ -11,8 +11,8 @@ Ce jeu est codé en JavaScript et est déployé sur Netlify: **[🔗 jouer à Pa
 ## Aperçu 
 
 <div style="display: flex; gap: 3rem;">
-  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto;" />
-  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto;" />
+  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto; border: 1px solid yellow;" />
+  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto; border: 1px solid yellow;" />
 </div>
 
 ---- 
@@ -128,21 +128,22 @@ la maintenance et l'évolution du projet.
 
 Chaque fantôme a un comportement unique basé sur un algorithme spécifique: 
 
-**1. Déplacement aléatoire (Fantôme orange Clyde):**
+#### 6.1.1. Déplacement aléatoire (Fantôme orange Clyde):**
 
 Il se déplace de manière aléatoire en changeant de direction s'il rencontre un mur. S'il peut avancer, il continue dans la même direction. 
 
-**2. Algorithme de plus court chemin (Fantôme rouge Blinky):**
+#### 6.1.2. Algorithme de plus court chemin (Fantôme rouge Blinky):**
 
 Il utilise l'algorithme de Breadth-First Search ***(BFS)*** pour déterminer le chemin le plus rapide jusqu'à Pac-Man. Cet algorithme explore les cases adjacentes en priorité pour garantir le trajet le plus court sans obstacles.
 
- **3. Comportement hybride (Fantôme bleu clair Inky)**:
+#### 6.1.3. Comportement hybride (Fantôme bleu clair Inky)**:
 
 Il alterne entre un suivi direct de Pac-Man (comme Blinky) et un mouvement aléatoire (comme Clyde). Un timer lui permet de changer de stratégie à intervalles réguliers.
 
-**4. Anticipation (Fantôme rose Pinky)**:
+#### 6.1.4. Anticipation (Fantôme rose Pinky)**:
 
 Il tente de prévoir la position future de Pac-Man en fonction de sa direction actuelle. Il cherche à intercepter Pac-Man en avançant vers une case située quelques déplacements devant lui.
+
 
 
 ### 6.2. Gestion des collisions 🧱
@@ -154,9 +155,12 @@ Il tente de prévoir la position future de Pac-Man en fonction de sa direction a
 **3. Si Pac-Man mange une super-pastille**, les fantômes deviennent vulnérables (bleus) temporairement et rapportent des points.
 
 
+
 ### 6.3. Apparition et gestion des fruits 🍒
 
-**1. Les fruits apparaissent à intervalles réguliers à des positions aléatoires** dans le labyrinthe. L'algorithme vérifie que la position sélectionnée ne contient ni mur, ni fantôme, ni Pac-Man avant de placer un fruit.
+**Les fruits apparaissent à intervalles réguliers à des positions aléatoires** dans le labyrinthe. L'algorithme vérifie que la position sélectionnée ne contient ni mur, ni fantôme, ni Pac-Man avant de placer un fruit.
+
+
 
 ### 6.4. Algorithme de boucle du jeu ➰
 
