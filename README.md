@@ -11,8 +11,8 @@ Ce jeu est codé en JavaScript et est déployé sur Netlify: **[🔗 jouer à Pa
 ## Aperçu 
 
 <div style="display: flex; gap: 3rem;">
-  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto; border: 1px solid yellow;" />
-  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto; border: 1px solid yellow;" />
+  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto; border: 2px solid #FFFFFF;" />
+  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto; border: 2px solid #FFFFFF;" />
 </div>
 
 ---- 
@@ -128,37 +128,37 @@ la maintenance et l'évolution du projet.
 
 Chaque fantôme a un comportement unique basé sur un algorithme spécifique: 
 
-#### 6.1.1. Déplacement aléatoire (Fantôme orange Clyde):**
+#### 6.1.1. Déplacement aléatoire (Fantôme orange Clyde)**
 
-Il se déplace de manière aléatoire en changeant de direction s'il rencontre un mur. S'il peut avancer, il continue dans la même direction. 
+- Il se déplace de manière aléatoire en changeant de direction s'il rencontre un mur. S'il peut avancer, il continue dans la même direction. 
 
-#### 6.1.2. Algorithme de plus court chemin (Fantôme rouge Blinky):**
+#### 6.1.2. Algorithme de plus court chemin (Fantôme rouge Blinky)**
 
-Il utilise l'algorithme de Breadth-First Search ***(BFS)*** pour déterminer le chemin le plus rapide jusqu'à Pac-Man. Cet algorithme explore les cases adjacentes en priorité pour garantir le trajet le plus court sans obstacles.
+- Il utilise l'algorithme de Breadth-First Search ***(BFS)*** pour déterminer le chemin le plus rapide jusqu'à Pac-Man. Cet algorithme explore les cases adjacentes en priorité pour garantir le trajet le plus court sans obstacles.
 
-#### 6.1.3. Comportement hybride (Fantôme bleu clair Inky)**:
+#### 6.1.3. Comportement hybride (Fantôme bleu clair Inky)**
 
-Il alterne entre un suivi direct de Pac-Man (comme Blinky) et un mouvement aléatoire (comme Clyde). Un timer lui permet de changer de stratégie à intervalles réguliers.
+- Il alterne entre un suivi direct de Pac-Man (comme Blinky) et un mouvement aléatoire (comme Clyde). Un timer lui permet de changer de stratégie à intervalles réguliers.
 
-#### 6.1.4. Anticipation (Fantôme rose Pinky)**:
+#### 6.1.4. Anticipation (Fantôme rose Pinky)**
 
-Il tente de prévoir la position future de Pac-Man en fonction de sa direction actuelle. Il cherche à intercepter Pac-Man en avançant vers une case située quelques déplacements devant lui.
+- Il tente de prévoir la position future de Pac-Man en fonction de sa direction actuelle. Il cherche à intercepter Pac-Man en avançant vers une case située quelques déplacements devant lui.
 
 
 
 ### 6.2. Gestion des collisions 🧱
 
-**1. Pour éviter que Pac-Man traverse les murs**, une fonction de détection de collision vérifie si la case suivante est un mur.
+- **1. Pour éviter que Pac-Man traverse les murs**, une fonction de détection de collision vérifie si la case suivante est un mur.
 
-**2. Si PacMan rencontre un fantôme**, la partie est perdue.
+- **2. Si PacMan rencontre un fantôme**, la partie est perdue.
 
-**3. Si Pac-Man mange une super-pastille**, les fantômes deviennent vulnérables (bleus) temporairement et rapportent des points.
+- **3. Si Pac-Man mange une super-pastille**, les fantômes deviennent vulnérables (bleus) temporairement et rapportent des points.
 
 
 
 ### 6.3. Apparition et gestion des fruits 🍒
 
-**Les fruits apparaissent à intervalles réguliers à des positions aléatoires** dans le labyrinthe. L'algorithme vérifie que la position sélectionnée ne contient ni mur, ni fantôme, ni Pac-Man avant de placer un fruit.
+- **Les fruits apparaissent à intervalles réguliers à des positions aléatoires** dans le labyrinthe. L'algorithme vérifie que la position sélectionnée ne contient ni mur, ni fantôme, ni Pac-Man avant de placer un fruit.
 
 
 
@@ -166,28 +166,28 @@ Il tente de prévoir la position future de Pac-Man en fonction de sa direction a
 
 Le jeu fonctionne en boucle continue:
 
-**1. Pac-Man** avance selon la direction choisie. 
+- **1. Pac-Man** avance selon la direction choisie. 
 
-**2. Le programme vérifie les collisions** et interactions (mur, pastille, fantôme, fruit).
+- **2. Le programme vérifie les collisions** et interactions (mur, pastille, fantôme, fruit).
 
-**3. Chaque fantôme** calcule son prochain déplacement selon son algorithme propre.
+- **3. Chaque fantôme** calcule son prochain déplacement selon son algorithme propre.
 
-**4. La boucle se répète** jusqu'à ce que Pac-Man ait mangé toutes les pastilles ou perdu.
+- **4. La boucle se répète** jusqu'à ce que Pac-Man ait mangé toutes les pastilles ou perdu.
 
 
 ### 6.5. Affichage du jeu 🆑
 
 L'affichage du jeu repose sur un algorithme de rendu qui met à jour le canvas à chaque instant:
 
-**1. Effacer l'écran** (clearRect) pour éviter les superpositions.
+- **1. Effacer l'écran** (clearRect) pour éviter les superpositions.
 
-**2. Dessiner la grille du jeu** en parcourant plateauDeJeu.grille et en affichant les murs, pastilles, fruits et cases vides.
+- **2. Dessiner la grille du jeu** en parcourant plateauDeJeu.grille et en affichant les murs, pastilles, fruits et cases vides.
 
-**3. Afficher les personnages**: Pac-Man est dessiné avec sa direction actuelle. Les fantômes changent d'apparence s’ils sont vulnérables. 
+- **3. Afficher les personnages**: Pac-Man est dessiné avec sa direction actuelle. Les fantômes changent d'apparence s’ils sont vulnérables. 
 
-**4. Affichage du score** et de l’état du jeu (Game Over ou Victoire).
+- **4. Affichage du score** et de l’état du jeu (Game Over ou Victoire).
 
-**5. Boucle de rafraîchissement**: L’appel récurrent à setTimeout() permet d’actualiser l’affichage toutes les 100ms.
+- **5. Boucle de rafraîchissement**: L’appel récurrent à setTimeout() permet d’actualiser l’affichage toutes les 100ms.
 
 ---
 
