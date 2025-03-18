@@ -10,9 +10,9 @@ Ce jeu est codé en JavaScript et est déployé sur Netlify: **[🔗 jouer à Pa
 
 ## Aperçu 
 
-<div style="display: flex; gap: 3rem;">
-  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto; border: 2px solid #FFFFFF;" />
-  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto; border: 2px solid #FFFFFF;" />
+<div style="display: flex; gap: 4rem;">
+  <img src="./assets/images/pacman_desktop.svg" alt="Aperçu du jeu sur desktop" style="max-width: 100%;  height: auto; border: 1px solid #FF0000;" />
+  <img src="./assets/images/pacman_mobile.svg" alt="Aperçu du jeu sur mobile - non jouable" style="max-width: 100%; height: auto; border: 1px solid #FF0000;" />
 </div>
 
 ---- 
